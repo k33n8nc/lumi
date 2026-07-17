@@ -44,7 +44,7 @@ onMounted(() => {
       scrollTrigger: {
         trigger: '#morph-container',
         start: 'top top',
-        end: '+=85%', // Shorter scroll distance for quick transition
+        end: '+=130%', // Scroll distance to complete the morph transition
         scrub: true,
         pin: true,
         invalidateOnRefresh: true
@@ -63,13 +63,13 @@ onMounted(() => {
       duration: 0.15
     }, 0)
 
-    // Step 2: Background shifts to yellow and Sunrise circle expands in center (starts immediately at 0!)
+    // Step 2: Background shifts to white and pure white Sunrise expands (starts immediately at 0!)
     .to('#morph-container', {
-      backgroundColor: '#ffd046', // Transition directly to yellow background
+      backgroundColor: '#ffffff',
       duration: 0.4
     }, 0)
     .to('.sunrise-circle', {
-      scale: 1.1,
+      scale: 1,
       opacity: 1,
       duration: 0.4,
       ease: 'power1.out'
@@ -131,13 +131,13 @@ onMounted(() => {
         <!-- Background Hero Glow Layer (fades out as sunrise starts) -->
         <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(29,70,117,0.15)_0%,transparent_70%)] pointer-events-none hero-bg-glow"></div>
 
-        <!-- The Sunrise Circle (expands behind the cards, styled with radial yellow glow in CSS) -->
-        <div class="sunrise-circle absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] md:w-[950px] md:h-[950px] rounded-full pointer-events-none scale-0 opacity-0 z-0"></div>
+        <!-- The Sunrise Circle (expands behind the cards, styled with radial white/warm glow in CSS) -->
+        <div class="sunrise-circle absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] md:w-[1100px] md:h-[1100px] rounded-full pointer-events-none scale-0 opacity-0 z-0"></div>
 
         <!-- Hero Content Layer (centered layout) -->
         <div class="max-w-4xl my-auto space-y-8 relative z-20 py-12 hero-content text-center flex flex-col items-center justify-center">
           <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight leading-[1.15] text-center w-full">
-            Lumi brengt <span class="bg-gradient-to-r from-lumi-yellow via-amber-300 to-white bg-clip-text text-transparent">helderheid</span> <br /> in uw organisatie.
+            Lumi brengt <span class="bg-gradient-to-r from-lumi-yellow via-amber-300 to-white bg-clip-text text-transparent">helderheid</span> in uw organisatie.
           </h1>
           <p class="text-zinc-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed font-medium text-center">
             Lumi Support staat naast kinderopvangorganisaties die rust, overzicht en continuïteit zoeken. Met jarenlange praktijkervaring binnen de kinderopvang weten wij precies waar de uitdagingen liggen — van planning en oudercommunicatie tot facturatie en debiteurenbeheer.
@@ -156,20 +156,20 @@ onMounted(() => {
         <div class="expertises-layer absolute inset-0 flex flex-col justify-center items-center px-6 py-12 opacity-0 pointer-events-none z-10">
           <div class="w-full max-w-6xl mt-6">
             
-            <!-- Heading (White underline for contrast against yellow background) -->
+            <!-- Heading -->
             <div class="mb-12 text-left">
               <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight relative inline-block text-lumi-blue-dark">
                 Onze expertises
-                <span class="absolute bottom-[-10px] left-0 w-24 h-1.5 bg-white rounded-full"></span>
+                <span class="absolute bottom-[-10px] left-0 w-24 h-1.5 bg-lumi-yellow rounded-full"></span>
               </h2>
             </div>
 
-            <!-- 6 clean empty cards (White layouts look premium on yellow background) -->
+            <!-- 6 clean empty cards as requested -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               <div 
                 v-for="i in 6" 
                 :key="i" 
-                class="bg-white/95 border border-white/60 rounded-2xl p-8 h-52 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+                class="bg-[#e5e7eb]/70 border border-zinc-200/40 rounded-2xl p-8 h-52 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
               >
                 <!-- Empty placeholder rectangle as requested -->
               </div>
@@ -178,27 +178,27 @@ onMounted(() => {
           </div>
         </div>
 
-        <!-- Scroll prompt (explicitly centered) -->
-        <div class="absolute bottom-10 left-0 right-0 text-center text-zinc-400 text-[10px] tracking-[0.2em] uppercase z-20 animate-bounce hero-scroll-prompt">
+        <!-- Scroll prompt -->
+        <div class="absolute bottom-10 text-zinc-400 text-[10px] tracking-[0.2em] uppercase relative z-20 animate-bounce hero-scroll-prompt">
           Scroll voor verheldering
           <div class="text-base mt-1">↓</div>
         </div>
 
       </section>
 
-      <!-- Section 3: Lumi Team (White Background, matching request) -->
-      <section id="team" class="min-h-screen bg-white text-lumi-blue-dark py-28 px-6 flex flex-col justify-center items-center relative overflow-hidden border-t border-zinc-100">
+      <!-- Section 3: Lumi Team (Yellow Background, matching 03_team) -->
+      <section id="team" class="min-h-screen bg-lumi-yellow text-lumi-blue-dark py-28 px-6 flex flex-col justify-center items-center relative overflow-hidden">
         
         <!-- Faded Pattern Layer -->
-        <div class="absolute inset-0 bg-black/5 opacity-[0.01] pointer-events-none"></div>
+        <div class="absolute inset-0 bg-black/5 opacity-[0.03] pointer-events-none"></div>
 
         <div class="w-full max-w-6xl relative z-10 space-y-16">
           
           <!-- Section Heading -->
           <div class="text-left">
-            <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight relative inline-block text-lumi-blue-dark">
+            <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight relative inline-block text-lumi-blue">
               Lumi team
-              <span class="absolute bottom-[-10px] left-0 w-24 h-1.5 bg-lumi-yellow rounded-full"></span>
+              <span class="absolute bottom-[-10px] left-0 w-24 h-1.5 bg-white rounded-full"></span>
             </h2>
           </div>
 
@@ -207,15 +207,15 @@ onMounted(() => {
             <div 
               v-for="(member, index) in team" 
               :key="index" 
-              class="team-card bg-[#f3f4f6] hover:bg-[#e5e7eb] border border-zinc-200/50 rounded-2xl p-6 flex items-center gap-4 transition-all duration-300 hover:shadow-md"
+              class="team-card bg-white/20 hover:bg-white/30 border border-white/35 rounded-2xl p-6 flex items-center gap-4 transition-all duration-300 hover:shadow-lg"
             >
               <!-- Avatar Circle Placeholder -->
-              <div class="w-14 h-14 rounded-full bg-white flex-shrink-0 shadow-sm flex items-center justify-center text-xl font-bold text-lumi-blue-dark">
+              <div class="w-14 h-14 rounded-full bg-white flex-shrink-0 shadow-sm flex items-center justify-center text-xl font-bold text-lumi-blue">
                 {{ member.icon }}
               </div>
               <div class="text-left">
-                <h4 class="font-extrabold text-base text-lumi-blue-dark">{{ member.name }}</h4>
-                <span class="text-xs font-semibold text-zinc-500 block mt-0.5">{{ member.role }}</span>
+                <h4 class="font-extrabold text-base text-lumi-blue">{{ member.name }}</h4>
+                <span class="text-xs font-semibold text-lumi-blue-bright/70 block mt-0.5">{{ member.role }}</span>
               </div>
             </div>
           </div>
@@ -256,10 +256,10 @@ onMounted(() => {
 </template>
 
 <style scoped>
-/* Glowing yellow sunrise light source styling */
+/* Pure white radial light source styling */
 .sunrise-circle {
-  background: radial-gradient(circle, rgba(255,208,70,1) 0%, rgba(255,208,70,0.85) 30%, rgba(255,208,70,0.2) 55%, rgba(255,208,70,0) 75%);
-  filter: blur(28px);
+  background: radial-gradient(circle, rgba(255,255,255,1) 0%, rgba(255,255,255,0.85) 30%, rgba(255,255,255,0.1) 60%, rgba(255,255,255,0) 75%);
+  filter: blur(32px);
   will-change: transform, opacity;
 }
 .hero-content, .hero-scroll-prompt {
