@@ -1,271 +1,197 @@
-<script setup>
-import { onMounted, ref } from 'vue'
+<script setup lang="ts">
+import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import gsap from 'gsap'
+import { ScrollSmoother } from 'gsap/ScrollSmoother'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-// Register GSAP plugins on client-side
-if (process.client) {
-  gsap.registerPlugin(ScrollTrigger)
-}
-
 useHead({
-  title: 'Lumi | Helder in Kinderopvang',
+  title: 'Lumi | Helderheid in uw organisatie',
   meta: [
-    { name: 'description', content: 'Lumi Support staat naast kinderopvangorganisaties die rust, overzicht en continuïteit zoeken.' }
+    {
+      name: 'description',
+      content: 'Lumi Support brengt rust, overzicht en continuïteit in kinderopvangorganisaties.'
+    }
   ]
 })
 
-// Team members with diverse roles to replace duplicates
-const team = [
-  { name: 'Ailko Treebusch', role: 'Eigenaar & Oprichter', icon: '👤' },
-  { name: 'Linda de Vries', role: 'Senior Planner', icon: '👩‍💼' },
-  { name: 'Mark de Jong', role: 'Financieel Specialist', icon: '👨‍💼' },
-  { name: 'Annelies Bakker', role: 'Debiteurenbeheer', icon: '👩‍💻' }
+const transitionSection = ref<HTMLElement | null>(null)
+const menuOpen = ref(false)
+
+const services = [
+  { number: '01', title: 'Planning', text: 'Grip op bezetting, roosters en de dagelijkse praktijk.' },
+  { number: '02', title: 'Oudercommunicatie', text: 'Heldere, zorgvuldige communicatie die vertrouwen geeft.' },
+  { number: '03', title: 'Facturatie', text: 'Een correct en overzichtelijk facturatieproces.' },
+  { number: '04', title: 'Debiteurenbeheer', text: 'Persoonlijke opvolging met aandacht voor de relatie.' },
+  { number: '05', title: 'Administratie', text: 'Een administratie die klopt en altijd inzicht biedt.' },
+  { number: '06', title: 'Continuïteit', text: 'Extra capaciteit en kennis precies wanneer die nodig is.' }
 ]
 
-// Method to programmatic scroll on CTA click
-const scrollToExpertises = () => {
-  if (process.client) {
-    const container = document.querySelector('#morph-container')
-    if (container) {
-      const scrollPos = container.offsetTop + (window.innerHeight * 0.8)
-      window.scrollTo({
-        top: scrollPos,
-        behavior: 'smooth'
-      })
-    }
-  }
+let smoother: ScrollSmoother | null = null
+let animationContext: gsap.Context | null = null
+
+const scrollToServices = () => {
+  if (!transitionSection.value) return
+
+  const target = transitionSection.value.offsetTop + window.innerHeight * 2.92
+  window.scrollTo({ top: target, behavior: 'smooth' })
 }
 
-onMounted(() => {
-  if (process.client) {
-    // Single pinned morphing timeline combining Hero and Expertises
-    const morphTl = gsap.timeline({
+const scrollToTop = () => {
+  menuOpen.value = false
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+onMounted(async () => {
+  gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
+  await nextTick()
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  if (!prefersReducedMotion) {
+    smoother = ScrollSmoother.create({
+      wrapper: '#smooth-wrapper',
+      content: '#smooth-content',
+      smooth: 1.15,
+      effects: true,
+      normalizeScroll: true,
+      smoothTouch: 0.08
+    })
+  }
+
+  animationContext = gsap.context(() => {
+    if (prefersReducedMotion) {
+      gsap.set('.sun-orb', { opacity: 1, scale: 4, left: '50%', top: '50%' })
+      gsap.set('.hero-layer', { opacity: 0 })
+      gsap.set('.services-layer', { opacity: 1, visibility: 'visible' })
+      return
+    }
+
+    const coverScale = () => {
+      const diameter = Math.min(window.innerWidth, window.innerHeight) * 0.68
+      return (Math.hypot(window.innerWidth, window.innerHeight) / diameter) * 1.08
+    }
+
+    const timeline = gsap.timeline({
+      defaults: { ease: 'none' },
       scrollTrigger: {
-        trigger: '#morph-container',
+        trigger: transitionSection.value,
         start: 'top top',
-        end: '+=85%', // Shorter scroll distance for quick transition
-        scrub: true,
+        end: '+=300%',
+        scrub: 0.8,
         pin: true,
+        anticipatePin: 1,
         invalidateOnRefresh: true
       }
     })
 
-    // Step 1: Hero content fades out and translates upwards (starts at 0)
-    morphTl.to('.hero-content', {
-      opacity: 0,
-      y: -80,
-      duration: 0.25
-    }, 0)
-    .to('.hero-scroll-prompt', {
-      opacity: 0,
-      y: -20,
-      duration: 0.15
-    }, 0)
+    timeline
+      .to('.hero-layer', { opacity: 0.22, yPercent: -2, duration: 0.2 }, 0.06)
+      .to('.hero-cta', { opacity: 0, y: -12, duration: 0.12 }, 0.04)
+      .fromTo(
+        '.sun-orb',
+        { opacity: 0, scale: 0.16, left: '50%', top: '50%' },
+        { opacity: 0.34, scale: 0.8, duration: 0.24 },
+        0.06
+      )
+      .to('.hero-layer', { opacity: 0, yPercent: -5, duration: 0.18 }, 0.26)
+      .to('.sun-orb', { opacity: 1, scale: 1.32, duration: 0.26 }, 0.24)
+      .to('.sun-orb', {
+        left: '50%',
+        top: '50%',
+        scale: coverScale,
+        duration: 0.42
+      }, 0.5)
+      .set('.services-layer', { visibility: 'visible' }, 0.58)
+      .fromTo(
+        '.services-layer',
+        { opacity: 0, y: 32 },
+        { opacity: 1, y: 0, duration: 0.27 },
+        0.66
+      )
+      .fromTo(
+        '.service-card',
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.22, stagger: 0.025 },
+        0.7
+      )
+  }, transitionSection.value ?? undefined)
 
-    // Step 2: Background shifts to yellow and Sunrise circle expands in center (starts immediately at 0!)
-    .to('#morph-container', {
-      backgroundColor: '#ffd046', // Transition directly to yellow background
-      duration: 0.4
-    }, 0)
-    .to('.sunrise-circle', {
-      scale: 1.1,
-      opacity: 1,
-      duration: 0.4,
-      ease: 'power1.out'
-    }, 0)
+  ScrollTrigger.refresh()
+})
 
-    // Step 3: Expertises content slides in from below and fades in (starts earlier at 0.25)
-    .fromTo('.expertises-layer', 
-      { opacity: 0, y: 60 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.35,
-        ease: 'power2.out',
-        onStart: () => {
-          const el = document.querySelector('.expertises-layer')
-          if (el) el.style.pointerEvents = 'auto'
-          const hl = document.querySelector('.hero-content')
-          if (hl) hl.style.pointerEvents = 'none'
-        },
-        onReverseComplete: () => {
-          const el = document.querySelector('.expertises-layer')
-          if (el) el.style.pointerEvents = 'none'
-          const hl = document.querySelector('.hero-content')
-          if (hl) hl.style.pointerEvents = 'auto'
-        }
-      },
-      0.25
-    )
-
-    // ScrollTrigger entrance animation for Team section
-    gsap.fromTo('.team-card',
-      { opacity: 0, scale: 0.93, y: 20 },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        stagger: 0.08,
-        duration: 0.6,
-        scrollTrigger: {
-          trigger: '#team',
-          start: 'top 75%',
-          toggleActions: 'play none none none'
-        }
-      }
-    )
-  }
+onBeforeUnmount(() => {
+  animationContext?.revert()
+  smoother?.kill()
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill())
 })
 </script>
 
 <template>
-  <div class="min-h-screen text-white selection:bg-lumi-yellow selection:text-lumi-blue-dark relative overflow-x-hidden">
-    
-    <!-- Wrapper -->
-    <div id="scroll-wrapper" class="relative">
-      
-      <!-- Combined Morph Container (Pins Hero and morphs into Expertises) -->
-      <section id="morph-container" class="w-full h-screen bg-lumi-blue-dark relative overflow-hidden flex flex-col justify-center items-center px-6 py-12">
-        
-        <!-- Background Hero Glow Layer (fades out as sunrise starts) -->
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(29,70,117,0.15)_0%,transparent_70%)] pointer-events-none hero-bg-glow"></div>
+  <div id="smooth-wrapper">
+    <div id="smooth-content">
+      <main>
+        <section ref="transitionSection" class="transition-stage" aria-label="Introductie en diensten">
+          <button
+            class="menu-button"
+            type="button"
+            :aria-expanded="menuOpen"
+            aria-label="Menu openen"
+            @click="menuOpen = !menuOpen"
+          >
+            <span />
+            <span />
+            <span />
+          </button>
 
-        <!-- The Sunrise Circle (expands behind the cards, styled with radial yellow glow in CSS) -->
-        <div class="sunrise-circle absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] md:w-[950px] md:h-[950px] rounded-full pointer-events-none scale-0 opacity-0 z-0"></div>
-
-        <!-- Hero Content Layer (centered layout) -->
-        <div class="max-w-4xl my-auto space-y-8 relative z-20 py-12 hero-content text-center flex flex-col items-center justify-center">
-          <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight leading-[1.15] text-center w-full">
-            Lumi brengt <span class="bg-gradient-to-r from-lumi-yellow via-amber-300 to-white bg-clip-text text-transparent">helderheid</span> <br /> in uw organisatie.
-          </h1>
-          <p class="text-zinc-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed font-medium text-center">
-            Lumi Support staat naast kinderopvangorganisaties die rust, overzicht en continuïteit zoeken. Met jarenlange praktijkervaring binnen de kinderopvang weten wij precies waar de uitdagingen liggen — van planning en oudercommunicatie tot facturatie en debiteurenbeheer.
-          </p>
-          <div class="pt-4 flex justify-center w-full">
-            <button 
-              @click="scrollToExpertises"
-              class="inline-block bg-lumi-yellow hover:bg-lumi-yellow-hover text-lumi-blue-dark font-extrabold px-10 py-4.5 rounded-full shadow-lg shadow-lumi-yellow/10 transition-all hover:scale-105 active:scale-95 text-xs tracking-wider cursor-pointer"
-            >
-              PLAN KENNISMAKING
-            </button>
-          </div>
-        </div>
-
-        <!-- Expertises Layer (fades/slides in on top of sunrise) -->
-        <div class="expertises-layer absolute inset-0 flex flex-col justify-center items-center px-6 py-12 opacity-0 pointer-events-none z-10">
-          <div class="w-full max-w-6xl mt-6">
-            
-            <!-- Heading (White underline for contrast against yellow background) -->
-            <div class="mb-12 text-left">
-              <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight relative inline-block text-lumi-blue-dark">
-                Onze expertises
-                <span class="absolute bottom-[-10px] left-0 w-24 h-1.5 bg-white rounded-full"></span>
-              </h2>
+          <div class="hero-layer">
+            <div class="hero-copy">
+              <h1>Lumi brengt <em>helderheid</em><br>in uw organisatie.</h1>
+              <p>
+                Lumi Support staat naast kinderopvangorganisaties die rust, overzicht en continuïteit zoeken.
+                Met jarenlange praktijkervaring binnen de kinderopvang weten wij precies waar de uitdagingen
+                liggen - van planning en oudercommunicatie tot facturatie en debiteurenbeheer.
+              </p>
+              <button class="hero-cta" type="button" @click="scrollToServices">
+                Bekijk onze diensten
+              </button>
             </div>
-
-            <!-- 6 clean empty cards (White layouts look premium on yellow background) -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div 
-                v-for="i in 6" 
-                :key="i" 
-                class="bg-white/95 border border-white/60 rounded-2xl p-8 h-52 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
-              >
-                <!-- Empty placeholder rectangle as requested -->
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Scroll prompt (explicitly centered) -->
-        <div class="absolute bottom-10 left-0 right-0 text-center text-zinc-400 text-[10px] tracking-[0.2em] uppercase z-20 animate-bounce hero-scroll-prompt">
-          Scroll voor verheldering
-          <div class="text-base mt-1">↓</div>
-        </div>
-
-      </section>
-
-      <!-- Section 3: Lumi Team (White Background, matching request) -->
-      <section id="team" class="min-h-screen bg-white text-lumi-blue-dark py-28 px-6 flex flex-col justify-center items-center relative overflow-hidden border-t border-zinc-100">
-        
-        <!-- Faded Pattern Layer -->
-        <div class="absolute inset-0 bg-black/5 opacity-[0.01] pointer-events-none"></div>
-
-        <div class="w-full max-w-6xl relative z-10 space-y-16">
-          
-          <!-- Section Heading -->
-          <div class="text-left">
-            <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight relative inline-block text-lumi-blue-dark">
-              Lumi team
-              <span class="absolute bottom-[-10px] left-0 w-24 h-1.5 bg-lumi-yellow rounded-full"></span>
-            </h2>
           </div>
 
-          <!-- Team Cards Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div 
-              v-for="(member, index) in team" 
-              :key="index" 
-              class="team-card bg-[#f3f4f6] hover:bg-[#e5e7eb] border border-zinc-200/50 rounded-2xl p-6 flex items-center gap-4 transition-all duration-300 hover:shadow-md"
-            >
-              <!-- Avatar Circle Placeholder -->
-              <div class="w-14 h-14 rounded-full bg-white flex-shrink-0 shadow-sm flex items-center justify-center text-xl font-bold text-lumi-blue-dark">
-                {{ member.icon }}
-              </div>
-              <div class="text-left">
-                <h4 class="font-extrabold text-base text-lumi-blue-dark">{{ member.name }}</h4>
-                <span class="text-xs font-semibold text-zinc-500 block mt-0.5">{{ member.role }}</span>
+          <div class="sun-orb" aria-hidden="true" />
+
+          <div id="diensten" class="services-layer">
+            <div class="services-inner">
+              <header class="services-heading">
+                <p>Waar wij bij helpen</p>
+                <h2>Onze diensten</h2>
+              </header>
+
+              <div class="services-grid">
+                <article v-for="service in services" :key="service.number" class="service-card">
+                  <span>{{ service.number }}</span>
+                  <div>
+                    <h3>{{ service.title }}</h3>
+                    <p>{{ service.text }}</p>
+                  </div>
+                </article>
               </div>
             </div>
           </div>
 
-          <!-- Call to Action bottom button -->
-          <div class="pt-8 text-center sm:text-left">
-            <a 
-              href="mailto:info@lumi-support.nl"
-              class="inline-block bg-lumi-blue hover:bg-lumi-blue-dark text-white font-extrabold px-10 py-4.5 rounded-full shadow-lg transition-all hover:scale-105 active:scale-95 text-xs tracking-wider"
-            >
-              ADMINISTRATIE EXPERTS
-            </a>
-          </div>
+          <Transition name="menu-fade">
+            <nav v-if="menuOpen" class="menu-panel" aria-label="Hoofdnavigatie">
+              <button type="button" @click="scrollToTop">Home</button>
+              <button type="button" @click="menuOpen = false; scrollToServices()">Onze diensten</button>
+              <a href="mailto:info@lumi-support.nl">Contact</a>
+            </nav>
+          </Transition>
+        </section>
 
-        </div>
-      </section>
-
-      <!-- Minimal Dark Blue Footer -->
-      <footer class="bg-lumi-blue-dark text-zinc-400 py-12 px-6 border-t border-white/5 text-center text-xs tracking-wider">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-6">
-          <div class="flex items-center gap-3">
-            <div class="flex items-center justify-center p-1 bg-white/5 border border-white/10 rounded-lg">
-              <img src="~/assets/images/logo.png" alt="Lumi" class="h-5 w-auto filter invert brightness-200" />
-            </div>
-            <span class="font-bold text-sm tracking-tight text-white">LUMI</span>
-          </div>
-          <div>
-            Contact: <a href="mailto:info@lumi-support.nl" class="text-white hover:text-lumi-yellow underline">info@lumi-support.nl</a>
-          </div>
-          <div>
-            &copy; 2026 Lumi Support. Alle rechten voorbehouden.
-          </div>
-        </div>
-      </footer>
-
+        <section class="closing-section">
+          <p>Administratieve rust voor de kinderopvang.</p>
+          <a href="mailto:info@lumi-support.nl">Plan een kennismaking <span>↗</span></a>
+        </section>
+      </main>
     </div>
   </div>
 </template>
-
-<style scoped>
-/* Glowing yellow sunrise light source styling */
-.sunrise-circle {
-  background: radial-gradient(circle, rgba(255,208,70,1) 0%, rgba(255,208,70,0.85) 30%, rgba(255,208,70,0.2) 55%, rgba(255,208,70,0) 75%);
-  filter: blur(28px);
-  will-change: transform, opacity;
-}
-.hero-content, .hero-scroll-prompt {
-  will-change: opacity, transform;
-}
-.expertises-layer {
-  will-change: opacity, transform;
-}
-</style>
