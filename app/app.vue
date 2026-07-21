@@ -15,6 +15,7 @@ useHead({
 })
 
 const transitionSection = ref<HTMLElement | null>(null)
+const horizontalSection = ref<HTMLElement | null>(null)
 const menuOpen = ref(false)
 
 const services = [
@@ -28,6 +29,7 @@ const services = [
 
 let smoother: ScrollSmoother | null = null
 let animationContext: gsap.Context | null = null
+let horizontalContext: gsap.Context | null = null
 
 const scrollToServices = () => {
   if (!transitionSection.value) return
@@ -116,11 +118,30 @@ onMounted(async () => {
       )
   }, transitionSection.value ?? undefined)
 
+  if (!prefersReducedMotion) {
+    horizontalContext = gsap.context(() => {
+      gsap.to('.horizontal-track', {
+        xPercent: -50,
+        ease: 'none',
+        scrollTrigger: {
+          trigger: horizontalSection.value,
+          start: 'top top',
+          end: '+=100%',
+          scrub: 0.8,
+          pin: true,
+          anticipatePin: 1,
+          invalidateOnRefresh: true
+        }
+      })
+    }, horizontalSection.value ?? undefined)
+  }
+
   ScrollTrigger.refresh()
 })
 
 onBeforeUnmount(() => {
   animationContext?.revert()
+  horizontalContext?.revert()
   smoother?.kill()
   ScrollTrigger.getAll().forEach(trigger => trigger.kill())
 })
@@ -185,6 +206,71 @@ onBeforeUnmount(() => {
               <a href="mailto:info@lumi-support.nl">Contact</a>
             </nav>
           </Transition>
+        </section>
+
+        <section ref="horizontalSection" class="horizontal-stage" aria-label="Team en kennismaken">
+          <div class="horizontal-track">
+            <section class="team-panel" aria-labelledby="team-title">
+              <div class="panel-menu-mark panel-menu-mark--dark" aria-hidden="true">
+                <span />
+                <span />
+                <span />
+              </div>
+
+              <div class="team-copy">
+                <h2 id="team-title">Het team achter<br><em>Lumi</em> Support</h2>
+                <p>
+                  Onze persoonlijke aanpak maakt het verschil. Wij zijn een klein team met een grote focus
+                  op uw kwaliteit en rust.
+                </p>
+              </div>
+
+              <div class="team-visual" aria-label="Ruimte voor toekomstige teamfoto">
+                <span>Team Lumi</span>
+              </div>
+            </section>
+
+            <section class="contact-panel" aria-labelledby="contact-title">
+              <div class="contact-shell">
+                <div class="contact-intro">
+                  <div>
+                    <h2 id="contact-title">Laten we kennismaken</h2>
+                    <p>
+                      Wilt u weten wat Lumi Support voor uw kinderopvangorganisatie kan betekenen?
+                      Neem vandaag nog contact met ons op.
+                    </p>
+                  </div>
+
+                  <div class="contact-options">
+                    <a href="mailto:contact@lumi-support.nl" class="contact-option">
+                      <span class="contact-icon" aria-hidden="true">@</span>
+                      <span><small>Mail ons</small>contact@lumi-support.nl</span>
+                    </a>
+                    <div class="contact-option">
+                      <span class="contact-icon" aria-hidden="true">↗</span>
+                      <span><small>Kennismaken</small>Vrijblijvend gesprek</span>
+                    </div>
+                  </div>
+                </div>
+
+                <form class="contact-form" @submit.prevent>
+                  <label>
+                    <span>Naam</span>
+                    <input type="text" name="name" autocomplete="name">
+                  </label>
+                  <label>
+                    <span>E-mailadres</span>
+                    <input type="email" name="email" autocomplete="email">
+                  </label>
+                  <label class="message-field">
+                    <span>Bericht</span>
+                    <textarea name="message" />
+                  </label>
+                  <button type="submit">Verstuur bericht</button>
+                </form>
+              </div>
+            </section>
+          </div>
         </section>
 
         <section class="closing-section">
