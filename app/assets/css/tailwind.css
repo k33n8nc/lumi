@@ -370,40 +370,17 @@ button {
   letter-spacing: -0.05em;
 }
 
-.panel-menu-mark {
-  position: absolute;
-  z-index: 3;
-  top: clamp(2rem, 5vh, 3.2rem);
-  right: clamp(1.5rem, 4vw, 4.5rem);
-  display: flex;
-  width: 3.5rem;
-  height: 2.75rem;
-  padding: 0.35rem;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.panel-menu-mark span {
-  display: block;
-  width: 100%;
-  height: 0.24rem;
-  background: currentColor;
-}
-
-.panel-menu-mark--dark {
-  color: #111;
-}
-
 .contact-panel {
   display: flex;
-  padding: clamp(1.5rem, 6vh, 5rem) clamp(1.5rem, 5vw, 5rem);
+  padding-right: clamp(1.5rem, 5vw, 5rem);
   background: white;
-  align-items: stretch;
+  align-items: center;
 }
 
 .contact-shell {
   display: grid;
   width: 100%;
+  height: 80%;
   overflow: hidden;
   border-radius: 0 clamp(2.4rem, 4vw, 4rem) clamp(2.4rem, 4vw, 4rem) 0;
   grid-template-columns: 1fr 1fr;
@@ -673,18 +650,12 @@ button {
     border-radius: 1.5rem;
   }
 
-  .panel-menu-mark {
-    top: 1.5rem;
-    right: 1.25rem;
-    width: 3rem;
-    height: 2.35rem;
-  }
-
   .contact-panel {
     padding: 0.8rem;
   }
 
   .contact-shell {
+    height: 100%;
     border-radius: 0 1.6rem 1.6rem 0;
     grid-template-columns: 1fr;
     grid-template-rows: 43% 57%;

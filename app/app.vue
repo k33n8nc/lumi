@@ -211,12 +211,6 @@ onBeforeUnmount(() => {
         <section ref="horizontalSection" class="horizontal-stage" aria-label="Team en kennismaken">
           <div class="horizontal-track">
             <section class="team-panel" aria-labelledby="team-title">
-              <div class="panel-menu-mark panel-menu-mark--dark" aria-hidden="true">
-                <span />
-                <span />
-                <span />
-              </div>
-
               <div class="team-copy">
                 <h2 id="team-title">Het team achter<br><em>Lumi</em> Support</h2>
                 <p>
