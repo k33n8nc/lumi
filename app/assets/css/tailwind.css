@@ -148,14 +148,6 @@ button {
   flex-direction: column;
 }
 
-.services-heading p {
-  margin: 0 0 0.35rem;
-  font-size: 0.72rem;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-
 .services-heading h2 {
   display: inline-block;
   position: relative;
@@ -196,7 +188,7 @@ button {
   box-shadow: 0 1rem 2.5rem rgba(8, 35, 63, 0.07);
 }
 
-.service-card > span {
+.service-card>span {
   flex: 0 0 auto;
   padding-top: 0.2rem;
   color: #b48100;
@@ -403,7 +395,7 @@ button {
   line-height: 1;
 }
 
-.contact-intro > div > p {
+.contact-intro>div>p {
   max-width: 38rem;
   margin: 1.7rem 0 0;
   color: white;
@@ -424,7 +416,7 @@ button {
   text-decoration: none;
 }
 
-.contact-option > span:last-child {
+.contact-option>span:last-child {
   font-size: clamp(0.92rem, 1.1vw, 1.1rem);
 }
 
@@ -465,7 +457,7 @@ button {
   gap: 0.55rem;
 }
 
-.contact-form label > span {
+.contact-form label>span {
   color: #c6ced7;
   font-size: 0.74rem;
   font-weight: 800;
@@ -589,7 +581,7 @@ button {
     gap: 0.25rem;
   }
 
-  .service-card > span {
+  .service-card>span {
     padding: 0;
   }
 
@@ -670,7 +662,7 @@ button {
     font-size: clamp(2.2rem, 10vw, 3.25rem);
   }
 
-  .contact-intro > div > p {
+  .contact-intro>div>p {
     margin-top: 0.75rem;
     font-size: 0.9rem;
   }
@@ -690,7 +682,7 @@ button {
     font-size: 0.85rem;
   }
 
-  .contact-option > span:last-child {
+  .contact-option>span:last-child {
     overflow: hidden;
     font-size: 0.72rem;
     text-overflow: ellipsis;

@@ -198,7 +198,6 @@ onBeforeUnmount(() => {
           <div id="diensten" class="services-layer">
             <div class="services-inner">
               <header class="services-heading">
-                <p>Waar wij bij helpen</p>
                 <h2>Onze diensten</h2>
               </header>
 
