@@ -43,6 +43,20 @@ const scrollToTop = () => {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
+const scrollToTeam = () => {
+  menuOpen.value = false
+  const horizontalTrigger = ScrollTrigger.getById('team-contact-transition')
+  const target = horizontalTrigger?.start ?? horizontalSection.value?.getBoundingClientRect().top ?? 0
+  window.scrollTo({ top: target, behavior: 'smooth' })
+}
+
+const scrollToContact = () => {
+  menuOpen.value = false
+  const horizontalTrigger = ScrollTrigger.getById('team-contact-transition')
+  const target = horizontalTrigger?.end ?? horizontalSection.value?.getBoundingClientRect().top ?? 0
+  window.scrollTo({ top: target, behavior: 'smooth' })
+}
+
 onMounted(async () => {
   gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
   await nextTick()
@@ -124,6 +138,7 @@ onMounted(async () => {
         xPercent: -50,
         ease: 'none',
         scrollTrigger: {
+          id: 'team-contact-transition',
           trigger: horizontalSection.value,
           start: 'top top',
           end: '+=100%',
@@ -203,14 +218,15 @@ onBeforeUnmount(() => {
             <nav v-if="menuOpen" class="menu-panel" aria-label="Hoofdnavigatie">
               <button type="button" @click="scrollToTop">Home</button>
               <button type="button" @click="menuOpen = false; scrollToServices()">Onze diensten</button>
-              <a href="mailto:info@lumi-support.nl">Contact</a>
+              <button type="button" @click="scrollToTeam">Ons team</button>
+              <button type="button" @click="scrollToContact">Kennismaken</button>
             </nav>
           </Transition>
         </section>
 
         <section ref="horizontalSection" class="horizontal-stage" aria-label="Team en kennismaken">
           <div class="horizontal-track">
-            <section class="team-panel" aria-labelledby="team-title">
+            <section id="ons-team" class="team-panel" aria-labelledby="team-title">
               <div class="team-copy">
                 <h2 id="team-title">Het team achter<br><em>Lumi</em> Support</h2>
                 <p>
@@ -224,7 +240,7 @@ onBeforeUnmount(() => {
               </div>
             </section>
 
-            <section class="contact-panel" aria-labelledby="contact-title">
+            <section id="kennismaken" class="contact-panel" aria-labelledby="contact-title">
               <div class="contact-shell">
                 <div class="contact-intro">
                   <div>
@@ -237,13 +253,13 @@ onBeforeUnmount(() => {
 
                   <div class="contact-options">
                     <a href="mailto:contact@lumi-support.nl" class="contact-option">
-                      <span class="contact-icon" aria-hidden="true">@</span>
+                      <span class="contact-icon" aria-hidden="true" />
                       <span><small>Mail ons</small>contact@lumi-support.nl</span>
                     </a>
-                    <div class="contact-option">
-                      <span class="contact-icon" aria-hidden="true">↗</span>
-                      <span><small>Kennismaken</small>Vrijblijvend gesprek</span>
-                    </div>
+                    <a href="tel:+31640937499" class="contact-option">
+                      <span class="contact-icon" aria-hidden="true" />
+                      <span><small>Bel ons</small>+31 (0)6 40937499</span>
+                    </a>
                   </div>
                 </div>
 

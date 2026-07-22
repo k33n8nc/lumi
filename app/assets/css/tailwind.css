@@ -336,7 +336,7 @@ button {
 
 .team-copy h2 {
   margin: 0;
-  font-size: clamp(3rem, 3.8vw, 4rem);
+  font-size: clamp(2.6rem, 4vw, 4rem);
   font-weight: 700;
   letter-spacing: -0.045em;
   line-height: 1.04;
@@ -350,7 +350,7 @@ button {
 .team-copy p {
   max-width: 30rem;
   margin: 2.3rem 0 0;
-  font-size: clamp(1.05rem, 1.45vw, 1.45rem);
+  font-size: clamp(0.98rem, 1.15vw, 1.15rem);
   line-height: 1.5;
 }
 
@@ -398,6 +398,7 @@ button {
   margin: 0;
   color: var(--lumi-yellow);
   font-size: clamp(2.6rem, 4vw, 4rem);
+  font-weight: 700;
   letter-spacing: -0.045em;
   line-height: 1;
 }
@@ -406,25 +407,25 @@ button {
   max-width: 38rem;
   margin: 1.7rem 0 0;
   color: white;
-  font-size: clamp(1.05rem, 1.45vw, 1.45rem);
+  font-size: clamp(0.98rem, 1.15vw, 1.15rem);
   line-height: 1.45;
 }
 
 .contact-options {
   display: grid;
-  gap: 2rem;
+  gap: 1.3rem;
 }
 
 .contact-option {
   display: flex;
   color: white;
   align-items: center;
-  gap: 1.5rem;
+  gap: 1.1rem;
   text-decoration: none;
 }
 
 .contact-option > span:last-child {
-  font-size: clamp(1rem, 1.3vw, 1.3rem);
+  font-size: clamp(0.92rem, 1.1vw, 1.1rem);
 }
 
 .contact-option small {
@@ -439,8 +440,8 @@ button {
 
 .contact-icon {
   display: grid;
-  width: clamp(3.5rem, 5vw, 5rem);
-  height: clamp(3.5rem, 5vw, 5rem);
+  width: clamp(3.1rem, 4.2vw, 4.2rem);
+  height: clamp(3.1rem, 4.2vw, 4.2rem);
   flex: 0 0 auto;
   border-radius: 50%;
   background: white;
@@ -452,11 +453,11 @@ button {
 
 .contact-form {
   display: flex;
-  padding: clamp(3rem, 5vw, 5.5rem);
+  padding: clamp(2.5rem, 4vw, 4.25rem);
   background: #263f5d;
   flex-direction: column;
   justify-content: center;
-  gap: clamp(1.1rem, 2.5vh, 2rem);
+  gap: clamp(0.9rem, 1.8vh, 1.4rem);
 }
 
 .contact-form label {
@@ -485,12 +486,12 @@ button {
 }
 
 .contact-form input {
-  height: clamp(3.5rem, 7vh, 4.8rem);
+  height: clamp(3.2rem, 5.5vh, 4rem);
   padding: 0 1rem;
 }
 
 .contact-form textarea {
-  min-height: clamp(8rem, 22vh, 15rem);
+  min-height: clamp(7rem, 17vh, 11.5rem);
   padding: 1rem;
   resize: vertical;
 }
@@ -502,7 +503,7 @@ button {
 }
 
 .contact-form button {
-  min-height: 4.4rem;
+  min-height: 3.7rem;
   border: 0;
   border-radius: 0.75rem;
   background: var(--lumi-yellow);
@@ -634,12 +635,12 @@ button {
   }
 
   .team-copy h2 {
-    font-size: clamp(2.5rem, 11vw, 3.4rem);
+    font-size: clamp(2.2rem, 10vw, 3.25rem);
   }
 
   .team-copy p {
     margin-top: 1rem;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
 
   .team-visual {
@@ -666,12 +667,12 @@ button {
   }
 
   .contact-intro h2 {
-    font-size: clamp(2rem, 9vw, 2.7rem);
+    font-size: clamp(2.2rem, 10vw, 3.25rem);
   }
 
   .contact-intro > div > p {
     margin-top: 0.75rem;
-    font-size: 0.88rem;
+    font-size: 0.9rem;
   }
 
   .contact-options {
