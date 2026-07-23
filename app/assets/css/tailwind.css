@@ -173,24 +173,37 @@ button {
   flex: 1;
   min-height: 0;
   margin-top: clamp(2.6rem, 6vh, 4.5rem);
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(2, minmax(0, 1fr));
-  gap: clamp(0.9rem, 2.7vw, 3.6rem);
+  gap: clamp(0.8rem, 1.8vw, 2.25rem);
 }
 
 .service-card {
   display: flex;
   min-height: 0;
-  padding: clamp(1.15rem, 2.2vw, 2.2rem);
+  padding: clamp(1rem, 1.6vw, 1.65rem);
   border-radius: 0.85rem;
   background: rgba(255, 255, 255, 0.97);
-  gap: clamp(0.8rem, 1.4vw, 1.4rem);
+  flex-direction: column;
   box-shadow: 0 1rem 2.5rem rgba(8, 35, 63, 0.07);
 }
 
-.service-card>span {
-  flex: 0 0 auto;
-  padding-top: 0.2rem;
+.service-card-trigger {
+  display: grid;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: var(--lumi-navy);
+  cursor: default;
+  text-align: left;
+  grid-template-columns: auto 1fr;
+  align-items: start;
+  gap: clamp(0.65rem, 1vw, 1rem);
+}
+
+.service-number {
+  padding-top: 0.22rem;
   color: #b48100;
   font-size: 0.72rem;
   font-weight: 800;
@@ -202,11 +215,19 @@ button {
   letter-spacing: -0.025em;
 }
 
-.service-card p {
-  margin: 0.55rem 0 0;
+.service-card-body {
+  padding-left: clamp(1.35rem, 1.8vw, 2rem);
+}
+
+.service-card-body p {
+  margin: 0.65rem 0 0;
   color: #476078;
   font-size: clamp(0.78rem, 0.95vw, 0.94rem);
   line-height: 1.45;
+}
+
+.service-toggle {
+  display: none;
 }
 
 .menu-button {
@@ -568,29 +589,66 @@ button {
   }
 
   .services-grid {
+    display: flex;
     margin-top: 2.1rem;
-    grid-template-columns: repeat(2, 1fr);
-    grid-template-rows: repeat(3, minmax(0, 1fr));
-    gap: 0.7rem;
+    overflow: hidden;
+    flex-direction: column;
+    gap: 0.45rem;
   }
 
   .service-card {
-    padding: 0.9rem;
+    display: block;
+    flex: 0 0 auto;
+    padding: 0;
     border-radius: 0.65rem;
-    flex-direction: column;
-    gap: 0.25rem;
+    overflow: hidden;
   }
 
-  .service-card>span {
-    padding: 0;
+  .service-card-trigger {
+    min-height: 2.65rem;
+    padding: 0.5rem 0.9rem;
+    cursor: pointer;
+    grid-template-columns: 1.6rem 1fr auto;
+    align-items: center;
+    gap: 0.45rem;
   }
 
   .service-card h3 {
     font-size: clamp(0.9rem, 4.2vw, 1.15rem);
   }
 
-  .service-card p {
-    margin-top: 0.25rem;
+  .service-number {
+    padding: 0;
+  }
+
+  .service-toggle {
+    display: block;
+    font-size: 1.25rem;
+    font-weight: 400;
+    line-height: 1;
+    transition: transform 220ms ease;
+  }
+
+  .service-card.is-active .service-toggle {
+    transform: rotate(45deg);
+  }
+
+  .service-card-body {
+    max-height: 0;
+    padding: 0 0.9rem 0 2.95rem;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height 260ms ease, padding-bottom 260ms ease, opacity 180ms ease;
+  }
+
+  .service-card.is-active .service-card-body {
+    max-height: 4.5rem;
+    padding-bottom: 0.55rem;
+    opacity: 1;
+  }
+
+  .service-card-body p {
+    margin: 0;
     font-size: clamp(0.68rem, 2.7vw, 0.79rem);
     line-height: 1.3;
   }

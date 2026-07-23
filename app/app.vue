@@ -17,6 +17,7 @@ useHead({
 const transitionSection = ref<HTMLElement | null>(null)
 const horizontalSection = ref<HTMLElement | null>(null)
 const menuOpen = ref(false)
+const activeService = ref(0)
 
 const services = [
   { number: '01', title: 'Planning', text: 'Grip op bezetting, roosters en de dagelijkse praktijk.' },
@@ -24,7 +25,9 @@ const services = [
   { number: '03', title: 'Facturatie', text: 'Een correct en overzichtelijk facturatieproces.' },
   { number: '04', title: 'Debiteurenbeheer', text: 'Persoonlijke opvolging met aandacht voor de relatie.' },
   { number: '05', title: 'Administratie', text: 'Een administratie die klopt en altijd inzicht biedt.' },
-  { number: '06', title: 'Continuïteit', text: 'Extra capaciteit en kennis precies wanneer die nodig is.' }
+  { number: '06', title: 'Continuïteit', text: 'Extra capaciteit en kennis precies wanneer die nodig is.' },
+  { number: '07', title: 'Processen', text: 'Praktische ondersteuning voor duidelijke en werkbare processen.' },
+  { number: '08', title: 'Ondersteuning', text: 'Flexibele ondersteuning die aansluit op uw organisatie.' }
 ]
 
 let smoother: ScrollSmoother | null = null
@@ -34,7 +37,10 @@ let horizontalContext: gsap.Context | null = null
 const scrollToServices = () => {
   if (!transitionSection.value) return
 
-  const target = transitionSection.value.offsetTop + window.innerHeight * 2.92
+  const transitionTrigger = ScrollTrigger.getById('hero-services-transition')
+  const target = transitionTrigger
+    ? transitionTrigger.start + (transitionTrigger.end - transitionTrigger.start) * 0.97
+    : transitionSection.value.offsetTop + window.innerHeight * 1.75
   window.scrollTo({ top: target, behavior: 'smooth' })
 }
 
@@ -90,9 +96,10 @@ onMounted(async () => {
     const timeline = gsap.timeline({
       defaults: { ease: 'none' },
       scrollTrigger: {
+        id: 'hero-services-transition',
         trigger: transitionSection.value,
         start: 'top top',
-        end: '+=300%',
+        end: '+=180%',
         scrub: 0.8,
         pin: true,
         anticipatePin: 1,
@@ -101,15 +108,13 @@ onMounted(async () => {
     })
 
     timeline
-      .to('.hero-layer', { opacity: 0.22, yPercent: -2, duration: 0.2 }, 0.06)
-      .to('.hero-cta', { opacity: 0, y: -12, duration: 0.12 }, 0.04)
+      .to('.hero-layer', { opacity: 0, yPercent: -5, duration: 0.42 }, 0)
       .fromTo(
         '.sun-orb',
         { opacity: 0, scale: 0.16, left: '50%', top: '50%' },
         { opacity: 0.34, scale: 0.8, duration: 0.24 },
-        0.06
+        0
       )
-      .to('.hero-layer', { opacity: 0, yPercent: -5, duration: 0.18 }, 0.26)
       .to('.sun-orb', { opacity: 1, scale: 1.32, duration: 0.26 }, 0.24)
       .to('.sun-orb', {
         left: '50%',
@@ -202,10 +207,24 @@ onBeforeUnmount(() => {
               </header>
 
               <div class="services-grid">
-                <article v-for="service in services" :key="service.number" class="service-card">
-                  <span>{{ service.number }}</span>
-                  <div>
+                <article
+                  v-for="(service, index) in services"
+                  :key="service.number"
+                  class="service-card"
+                  :class="{ 'is-active': activeService === index }"
+                >
+                  <button
+                    class="service-card-trigger"
+                    type="button"
+                    :aria-expanded="activeService === index"
+                    :aria-controls="`service-panel-${index}`"
+                    @click="activeService = index"
+                  >
+                    <span class="service-number">{{ service.number }}</span>
                     <h3>{{ service.title }}</h3>
+                    <span class="service-toggle" aria-hidden="true">+</span>
+                  </button>
+                  <div :id="`service-panel-${index}`" class="service-card-body">
                     <p>{{ service.text }}</p>
                   </div>
                 </article>
