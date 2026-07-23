@@ -168,22 +168,31 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
+  <button
+    class="menu-button"
+    type="button"
+    :aria-expanded="menuOpen"
+    aria-label="Menu openen"
+    @click="menuOpen = !menuOpen"
+  >
+    <span />
+    <span />
+    <span />
+  </button>
+
+  <Transition name="menu-fade">
+    <nav v-if="menuOpen" class="menu-panel" aria-label="Hoofdnavigatie">
+      <button type="button" @click="scrollToTop">Home</button>
+      <button type="button" @click="menuOpen = false; scrollToServices()">Onze diensten</button>
+      <button type="button" @click="scrollToTeam">Ons team</button>
+      <button type="button" @click="scrollToContact">Kennismaken</button>
+    </nav>
+  </Transition>
+
   <div id="smooth-wrapper">
     <div id="smooth-content">
       <main>
         <section ref="transitionSection" class="transition-stage" aria-label="Introductie en diensten">
-          <button
-            class="menu-button"
-            type="button"
-            :aria-expanded="menuOpen"
-            aria-label="Menu openen"
-            @click="menuOpen = !menuOpen"
-          >
-            <span />
-            <span />
-            <span />
-          </button>
-
           <div class="hero-layer">
             <div class="hero-copy">
               <h1>Lumi brengt <em>helderheid</em><br>in uw organisatie.</h1>
@@ -232,14 +241,6 @@ onBeforeUnmount(() => {
             </div>
           </div>
 
-          <Transition name="menu-fade">
-            <nav v-if="menuOpen" class="menu-panel" aria-label="Hoofdnavigatie">
-              <button type="button" @click="scrollToTop">Home</button>
-              <button type="button" @click="menuOpen = false; scrollToServices()">Onze diensten</button>
-              <button type="button" @click="scrollToTeam">Ons team</button>
-              <button type="button" @click="scrollToContact">Kennismaken</button>
-            </nav>
-          </Transition>
         </section>
 
         <section ref="horizontalSection" class="horizontal-stage" aria-label="Team en kennismaken">

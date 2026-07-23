@@ -231,8 +231,8 @@ button {
 }
 
 .menu-button {
-  position: absolute;
-  z-index: 20;
+  position: fixed;
+  z-index: 99;
   top: clamp(2rem, 5vh, 3.2rem);
   right: clamp(1.5rem, 4vw, 4.5rem);
   display: flex;
@@ -244,6 +244,7 @@ button {
   cursor: pointer;
   flex-direction: column;
   justify-content: space-between;
+  mix-blend-mode: difference;
 }
 
 .menu-button span {
@@ -267,8 +268,8 @@ button {
 }
 
 .menu-panel {
-  position: absolute;
-  z-index: 15;
+  position: fixed;
+  z-index: 90;
   inset: 0;
   display: flex;
   padding: 8rem var(--page-gutter);
