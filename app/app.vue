@@ -16,6 +16,7 @@ useHead({
 
 const transitionSection = ref<HTMLElement | null>(null)
 const horizontalSection = ref<HTMLElement | null>(null)
+const mobileHorizontalSection = ref<HTMLElement | null>(null)
 const menuOpen = ref(false)
 const activeService = ref(0)
 
@@ -52,14 +53,25 @@ const scrollToTop = () => {
 const scrollToTeam = () => {
   menuOpen.value = false
   const horizontalTrigger = ScrollTrigger.getById('team-contact-transition')
-  const target = horizontalTrigger?.start ?? horizontalSection.value?.getBoundingClientRect().top ?? 0
+  const section = window.matchMedia('(max-width: 780px)').matches
+    ? mobileHorizontalSection.value
+    : horizontalSection.value
+  const fallback = section ? window.scrollY + section.getBoundingClientRect().top : 0
+  const target = horizontalTrigger?.start ?? fallback
   window.scrollTo({ top: target, behavior: 'smooth' })
 }
 
 const scrollToContact = () => {
   menuOpen.value = false
   const horizontalTrigger = ScrollTrigger.getById('team-contact-transition')
-  const target = horizontalTrigger?.end ?? horizontalSection.value?.getBoundingClientRect().top ?? 0
+  const isMobile = window.matchMedia('(max-width: 780px)').matches
+  const section = isMobile ? mobileHorizontalSection.value : horizontalSection.value
+  const fallback = section ? window.scrollY + section.getBoundingClientRect().top : 0
+  const target = horizontalTrigger
+    ? isMobile
+      ? horizontalTrigger.start + (horizontalTrigger.end - horizontalTrigger.start) * 0.52
+      : horizontalTrigger.end
+    : fallback
   window.scrollTo({ top: target, behavior: 'smooth' })
 }
 
@@ -139,21 +151,51 @@ onMounted(async () => {
 
   if (!prefersReducedMotion) {
     horizontalContext = gsap.context(() => {
-      gsap.to('.horizontal-track', {
-        xPercent: -50,
-        ease: 'none',
-        scrollTrigger: {
-          id: 'team-contact-transition',
-          trigger: horizontalSection.value,
-          start: 'top top',
-          end: '+=100%',
-          scrub: 0.8,
-          pin: true,
-          anticipatePin: 1,
-          invalidateOnRefresh: true
-        }
+      const media = gsap.matchMedia()
+
+      media.add('(min-width: 781px)', () => {
+        gsap.to('.horizontal-track', {
+          xPercent: -50,
+          ease: 'none',
+          scrollTrigger: {
+            id: 'team-contact-transition',
+            trigger: horizontalSection.value,
+            start: 'top top',
+            end: '+=100%',
+            scrub: 0.8,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true
+          }
+        })
       })
-    }, horizontalSection.value ?? undefined)
+
+      media.add('(max-width: 780px)', () => {
+        const timeline = gsap.timeline({
+          defaults: { ease: 'none' },
+          scrollTrigger: {
+            id: 'team-contact-transition',
+            trigger: mobileHorizontalSection.value,
+            start: 'top top',
+            end: '+=140%',
+            scrub: 0.65,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true
+          }
+        })
+
+        timeline
+          .to('.mobile-card-track', { xPercent: -66.6667, duration: 1 }, 0)
+          .to('.mobile-copy-team', { autoAlpha: 0, y: -12, duration: 0.12 }, 0.18)
+          .fromTo(
+            '.mobile-copy-contact',
+            { autoAlpha: 0, y: 12 },
+            { autoAlpha: 1, y: 0, duration: 0.12 },
+            0.28
+          )
+      })
+    })
   }
 
   ScrollTrigger.refresh()
@@ -299,6 +341,74 @@ onBeforeUnmount(() => {
                 </form>
               </div>
             </section>
+          </div>
+        </section>
+
+        <section
+          ref="mobileHorizontalSection"
+          class="mobile-horizontal-stage"
+          aria-label="Team en kennismaken"
+        >
+          <div class="mobile-copy-zone">
+            <div class="mobile-copy mobile-copy-team">
+              <h2>Het team achter<br><em>Lumi</em> Support</h2>
+              <p>
+                Onze persoonlijke aanpak maakt het verschil. Wij zijn een klein team met een grote focus
+                op uw kwaliteit en rust.
+              </p>
+            </div>
+
+            <div class="mobile-copy mobile-copy-contact">
+              <h2>Laten we <em>kennismaken</em></h2>
+              <p>
+                Wilt u weten wat Lumi Support voor uw kinderopvangorganisatie kan betekenen?
+                Neem vandaag nog contact met ons op.
+              </p>
+            </div>
+          </div>
+
+          <div class="mobile-card-viewport">
+            <div class="mobile-card-track">
+              <article class="mobile-card mobile-team-card" aria-label="Ruimte voor toekomstige teamfoto">
+                <span>Team Lumi</span>
+              </article>
+
+              <article class="mobile-card mobile-contact-card">
+                <div class="mobile-contact-heading">
+                  <small>Neem direct contact op</small>
+                  <p>We denken graag met u mee.</p>
+                </div>
+
+                <div class="mobile-contact-options">
+                  <a href="mailto:contact@lumi-support.nl" class="mobile-contact-option">
+                    <span class="mobile-contact-icon" aria-hidden="true" />
+                    <span><small>Mail ons</small>contact@lumi-support.nl</span>
+                  </a>
+                  <a href="tel:+31640937499" class="mobile-contact-option">
+                    <span class="mobile-contact-icon" aria-hidden="true" />
+                    <span><small>Bel ons</small>+31 (0)6 40937499</span>
+                  </a>
+                </div>
+              </article>
+
+              <article class="mobile-card mobile-form-card">
+                <form class="mobile-contact-form" @submit.prevent>
+                  <label>
+                    <span>Naam</span>
+                    <input type="text" name="mobile-name" autocomplete="name">
+                  </label>
+                  <label>
+                    <span>E-mailadres</span>
+                    <input type="email" name="mobile-email" autocomplete="email">
+                  </label>
+                  <label>
+                    <span>Bericht</span>
+                    <textarea name="mobile-message" />
+                  </label>
+                  <button type="submit">Verstuur bericht</button>
+                </form>
+              </article>
+            </div>
           </div>
         </section>
 
