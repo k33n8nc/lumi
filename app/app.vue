@@ -69,7 +69,7 @@ const scrollToContact = () => {
   const fallback = section ? window.scrollY + section.getBoundingClientRect().top : 0
   const target = horizontalTrigger
     ? isMobile
-      ? horizontalTrigger.start + (horizontalTrigger.end - horizontalTrigger.start) * 0.52
+      ? horizontalTrigger.start + (horizontalTrigger.end - horizontalTrigger.start) * 0.5
       : horizontalTrigger.end
     : fallback
   window.scrollTo({ top: target, behavior: 'smooth' })
