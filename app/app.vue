@@ -3,12 +3,15 @@ import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
   faCalendarDays,
+  faEnvelope,
   faFileInvoiceDollar,
   faFileSignature,
   faLaptopCode,
   faLightbulb,
   faListCheck,
+  faLocationDot,
   faMoneyCheckDollar,
+  faPhone,
   faUserPlus
 } from '@fortawesome/free-solid-svg-icons'
 import gsap from 'gsap'
@@ -239,6 +242,7 @@ onMounted(async () => {
         timeline
           .to('.mobile-card-track', { xPercent: -66.6667, duration: 1 }, 0)
           .to('.mobile-copy-team', { autoAlpha: 0, y: -12, duration: 0.12 }, 0.18)
+          .to(mobileHorizontalSection.value, { backgroundColor: '#08233f', duration: 0.14 }, 0.2)
           .fromTo(
             '.mobile-copy-contact',
             { autoAlpha: 0, y: 12 },
@@ -369,11 +373,15 @@ onBeforeUnmount(() => {
 
                   <div class="contact-options">
                     <a href="mailto:contact@lumi-support.nl" class="contact-option">
-                      <span class="contact-icon" aria-hidden="true" />
+                      <span class="contact-icon" aria-hidden="true">
+                        <FontAwesomeIcon :icon="faEnvelope" />
+                      </span>
                       <span><small>Mail ons</small>contact@lumi-support.nl</span>
                     </a>
                     <a href="tel:+31640937499" class="contact-option">
-                      <span class="contact-icon" aria-hidden="true" />
+                      <span class="contact-icon" aria-hidden="true">
+                        <FontAwesomeIcon :icon="faPhone" />
+                      </span>
                       <span><small>Bel ons</small>+31 (0)6 40937499</span>
                     </a>
                   </div>
@@ -436,11 +444,15 @@ onBeforeUnmount(() => {
 
                 <div class="mobile-contact-options">
                   <a href="mailto:contact@lumi-support.nl" class="mobile-contact-option">
-                    <span class="mobile-contact-icon" aria-hidden="true" />
+                    <span class="mobile-contact-icon" aria-hidden="true">
+                      <FontAwesomeIcon :icon="faEnvelope" />
+                    </span>
                     <span><small>Mail ons</small>contact@lumi-support.nl</span>
                   </a>
                   <a href="tel:+31640937499" class="mobile-contact-option">
-                    <span class="mobile-contact-icon" aria-hidden="true" />
+                    <span class="mobile-contact-icon" aria-hidden="true">
+                      <FontAwesomeIcon :icon="faPhone" />
+                    </span>
                     <span><small>Bel ons</small>+31 (0)6 40937499</span>
                   </a>
                 </div>
@@ -467,10 +479,57 @@ onBeforeUnmount(() => {
           </div>
         </section>
 
-        <section class="closing-section">
-          <p>Administratieve rust voor de kinderopvang.</p>
-          <a href="mailto:info@lumi-support.nl">Plan een kennismaking <span>↗</span></a>
-        </section>
+        <footer class="closing-section">
+          <div class="closing-main">
+            <div class="closing-copy">
+              <p>Administratieve rust voor de kinderopvang.</p>
+            </div>
+
+            <div class="closing-columns">
+              <nav class="footer-navigation" aria-label="Footernavigatie">
+                <h2>Navigatie</h2>
+                <div class="footer-navigation-links">
+                  <button type="button" @click="scrollToTop">Home</button>
+                  <button type="button" @click="scrollToServices">Onze diensten</button>
+                  <button type="button" @click="scrollToTeam">Ons team</button>
+                  <button type="button" @click="scrollToContact">Kennismaken</button>
+                </div>
+              </nav>
+
+              <div class="footer-contact">
+                <h2>Contact</h2>
+                <div class="footer-contact-links">
+                  <a href="mailto:contact@lumi-support.nl">
+                    <span class="footer-contact-icon" aria-hidden="true">
+                      <FontAwesomeIcon :icon="faEnvelope" />
+                    </span>
+                    <span>contact@lumi-support.nl</span>
+                  </a>
+                  <a href="tel:+31640937499">
+                    <span class="footer-contact-icon" aria-hidden="true">
+                      <FontAwesomeIcon :icon="faPhone" />
+                    </span>
+                    <span>+31 (0)6 409 37 499</span>
+                  </a>
+                  <div>
+                    <span class="footer-contact-icon" aria-hidden="true">
+                      <FontAwesomeIcon :icon="faLocationDot" />
+                    </span>
+                    <span>Landelijk werkzaam</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="closing-bottom">
+            <small>© 2026 Lumi Support B.V.</small>
+            <div>
+              <span>Privacybeleid</span>
+              <span>Voorwaarden</span>
+            </div>
+          </div>
+        </footer>
       </main>
     </div>
   </div>

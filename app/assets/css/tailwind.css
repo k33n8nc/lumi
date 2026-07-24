@@ -209,8 +209,8 @@ button {
   height: clamp(2.6rem, 3vw, 3.1rem);
   flex: 0 0 auto;
   border-radius: 50%;
-  background: rgba(255, 210, 74, 0.38);
-  color: #9b7000;
+  background: #fcebb3;
+  color: #8a661d;
   font-size: clamp(0.98rem, 1.15vw, 1.2rem);
   place-items: center;
 }
@@ -426,7 +426,7 @@ button {
 
 .contact-intro h2 {
   margin: 0;
-  color: var(--lumi-yellow);
+  color: white;
   font-size: clamp(2.6rem, 4vw, 4rem);
   font-weight: 700;
   letter-spacing: -0.045em;
@@ -470,13 +470,13 @@ button {
 
 .contact-icon {
   display: grid;
-  width: clamp(3.1rem, 4.2vw, 4.2rem);
-  height: clamp(3.1rem, 4.2vw, 4.2rem);
+  width: clamp(2.6rem, 3vw, 3.1rem);
+  height: clamp(2.6rem, 3vw, 3.1rem);
   flex: 0 0 auto;
   border-radius: 50%;
-  background: white;
+  background: var(--lumi-yellow);
   color: var(--lumi-navy);
-  font-size: 1.35rem;
+  font-size: clamp(0.98rem, 1.15vw, 1.2rem);
   font-weight: 800;
   place-items: center;
 }
@@ -545,33 +545,120 @@ button {
 }
 
 .closing-section {
-  display: flex;
-  min-height: 62svh;
-  padding: clamp(5rem, 10vw, 10rem) var(--page-gutter);
+  display: grid;
+  min-height: 58svh;
+  padding: clamp(3.5rem, 5vw, 5rem) var(--page-gutter) clamp(1.5rem, 2.5vw, 2.5rem);
   background: var(--lumi-navy);
-  align-items: flex-end;
-  justify-content: space-between;
-  gap: 3rem;
+  grid-template-rows: 1fr auto;
+  gap: clamp(2.5rem, 5vh, 4rem);
 }
 
-.closing-section p {
+.closing-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(30rem, 0.85fr);
+  align-items: center;
+  gap: clamp(4rem, 8vw, 9rem);
+}
+
+.closing-copy p {
   max-width: 42rem;
   margin: 0;
-  font-size: clamp(2.5rem, 5.4vw, 5.5rem);
+  font-size: clamp(2.6rem, 4vw, 4rem);
   font-weight: 700;
   letter-spacing: -0.045em;
-  line-height: 0.98;
+  line-height: 1.02;
 }
 
-.closing-section a {
-  flex: 0 0 auto;
+.closing-columns {
+  display: grid;
+  grid-template-columns: minmax(9rem, 0.72fr) minmax(16rem, 1.28fr);
+  gap: clamp(2.5rem, 5vw, 5rem);
+}
+
+.footer-navigation h2,
+.footer-contact h2 {
+  margin: 0 0 1.6rem;
   color: var(--lumi-yellow);
-  font-weight: 700;
-  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
 }
 
-.closing-section a span {
-  margin-left: 0.35rem;
+.footer-navigation-links,
+.footer-contact-links {
+  display: grid;
+  gap: 1rem;
+}
+
+.footer-navigation button {
+  width: fit-content;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: #a5b0bc;
+  cursor: pointer;
+  font-size: 0.98rem;
+  text-align: left;
+  transition: color 180ms ease;
+}
+
+.footer-navigation button:hover,
+.footer-navigation button:focus-visible {
+  color: var(--lumi-yellow);
+}
+
+.footer-contact-links>a,
+.footer-contact-links>div {
+  display: grid;
+  color: #a5b0bc;
+  font-size: 0.95rem;
+  line-height: 1.35;
+  text-decoration: none;
+  grid-template-columns: 1.15rem minmax(0, 1fr);
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.footer-contact-links>a {
+  transition: color 180ms ease;
+}
+
+.footer-contact-links>a:hover,
+.footer-contact-links>a:focus-visible {
+  color: white;
+}
+
+.footer-contact-icon {
+  display: grid;
+  width: 1.15rem;
+  height: 1.15rem;
+  color: var(--lumi-yellow);
+  font-size: 0.9rem;
+  place-items: center;
+}
+
+.closing-bottom {
+  display: flex;
+  padding-top: 1.8rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.14);
+  color: #7f8da0;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.closing-bottom small,
+.closing-bottom span {
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.closing-bottom>div {
+  display: flex;
+  gap: 2rem;
 }
 
 @media (max-width: 780px) {
@@ -720,7 +807,13 @@ button {
 
   .mobile-copy-contact {
     visibility: hidden;
+    color: white;
     opacity: 0;
+  }
+
+  .mobile-copy-contact h2,
+  .mobile-copy.mobile-copy-contact h2 em {
+    color: white;
   }
 
   .mobile-copy h2 {
@@ -832,11 +925,15 @@ button {
   }
 
   .mobile-contact-icon {
-    width: clamp(2.8rem, 14vw, 3.7rem);
-    height: clamp(2.8rem, 14vw, 3.7rem);
+    display: grid;
+    width: 2rem;
+    height: 2rem;
     flex: 0 0 auto;
     border-radius: 50%;
-    background: white;
+    background: var(--lumi-yellow);
+    color: var(--lumi-navy);
+    font-size: 0.78rem;
+    place-items: center;
   }
 
   .mobile-form-card {
@@ -907,10 +1004,37 @@ button {
   }
 
   .closing-section {
-    min-height: 70svh;
+    min-height: 0;
+    padding: 3.5rem 1.25rem 1.5rem;
+    gap: 3rem;
+  }
+
+  .closing-main {
+    grid-template-columns: 1fr;
+    gap: 4rem;
+  }
+
+  .closing-copy p {
+    font-size: clamp(2.25rem, 10.5vw, 3.45rem);
+  }
+
+  .closing-columns {
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  .footer-navigation-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .closing-bottom {
     flex-direction: column;
     align-items: flex-start;
-    justify-content: flex-end;
+  }
+
+  .closing-bottom>div {
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
   }
 }
 
