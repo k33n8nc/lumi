@@ -184,6 +184,7 @@ button {
   padding: clamp(1rem, 1.6vw, 1.65rem);
   border-radius: 0.85rem;
   background: rgba(255, 255, 255, 0.97);
+  color: var(--lumi-navy);
   flex-direction: column;
   box-shadow: 0 1rem 2.5rem rgba(8, 35, 63, 0.07);
 }
@@ -232,7 +233,7 @@ button {
 
 .service-card-body p {
   margin: 0.85rem 0 0;
-  color: #476078;
+  color: var(--lumi-navy);
   font-size: clamp(0.94rem, 1.08vw, 1.08rem);
   line-height: 1.52;
 }
@@ -699,11 +700,11 @@ button {
     width: 100%;
     height: 100svh;
     min-height: 39rem;
-    padding: 1.75rem 1.25rem 1rem;
+    padding: 5.4rem 1.25rem 1rem;
     overflow: hidden;
     background: white;
     color: var(--lumi-navy);
-    grid-template-rows: clamp(11rem, 25svh, 13.5rem) minmax(0, 1fr);
+    grid-template-rows: clamp(10.75rem, 21svh, 12rem) minmax(0, 1fr);
   }
 
   .mobile-copy-zone {
