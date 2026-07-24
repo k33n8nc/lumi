@@ -2,10 +2,13 @@
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
+  faArrowTrendUp,
   faCalendarDays,
   faEnvelope,
   faFileInvoiceDollar,
   faFileSignature,
+  faHandshake,
+  faHeart,
   faLaptopCode,
   faLightbulb,
   faListCheck,
@@ -31,6 +34,7 @@ useHead({
 const transitionSection = ref<HTMLElement | null>(null)
 const horizontalSection = ref<HTMLElement | null>(null)
 const mobileHorizontalSection = ref<HTMLElement | null>(null)
+const careersSection = ref<HTMLElement | null>(null)
 const menuOpen = ref(false)
 const activeService = ref(0)
 
@@ -85,6 +89,24 @@ const services = [
   }
 ]
 
+const careerValues = [
+  {
+    icon: faHandshake,
+    title: 'Flexibiliteit & vertrouwen',
+    text: 'Vrijheid om je werk goed in te richten, met duidelijke afspraken en vertrouwen als basis.'
+  },
+  {
+    icon: faArrowTrendUp,
+    title: 'Persoonlijke groei',
+    text: 'Ruimte om te leren, initiatief te nemen en samen onze dienstverlening steeds beter te maken.'
+  },
+  {
+    icon: faHeart,
+    title: 'Werk met betekenis',
+    text: 'Met jouw aandacht help je kinderopvang-organisaties iedere dag vooruit.'
+  }
+]
+
 let smoother: ScrollSmoother | null = null
 let animationContext: gsap.Context | null = null
 let horizontalContext: gsap.Context | null = null
@@ -126,6 +148,14 @@ const scrollToContact = () => {
       ? horizontalTrigger.start + (horizontalTrigger.end - horizontalTrigger.start) * 0.5
       : horizontalTrigger.end
     : fallback
+  window.scrollTo({ top: target, behavior: 'smooth' })
+}
+
+const scrollToCareers = () => {
+  menuOpen.value = false
+  if (!careersSection.value) return
+
+  const target = window.scrollY + careersSection.value.getBoundingClientRect().top
   window.scrollTo({ top: target, behavior: 'smooth' })
 }
 
@@ -242,7 +272,6 @@ onMounted(async () => {
         timeline
           .to('.mobile-card-track', { xPercent: -66.6667, duration: 1 }, 0)
           .to('.mobile-copy-team', { autoAlpha: 0, y: -12, duration: 0.12 }, 0.18)
-          .to(mobileHorizontalSection.value, { backgroundColor: '#08233f', duration: 0.14 }, 0.2)
           .fromTo(
             '.mobile-copy-contact',
             { autoAlpha: 0, y: 12 },
@@ -283,6 +312,7 @@ onBeforeUnmount(() => {
       <button type="button" @click="menuOpen = false; scrollToServices()">Onze diensten</button>
       <button type="button" @click="scrollToTeam">Ons team</button>
       <button type="button" @click="scrollToContact">Kennismaken</button>
+      <button type="button" @click="scrollToCareers">Werken bij</button>
     </nav>
   </Transition>
 
@@ -479,6 +509,27 @@ onBeforeUnmount(() => {
           </div>
         </section>
 
+        <section ref="careersSection" id="werken-bij" class="careers-section" aria-labelledby="careers-title">
+          <div class="careers-intro">
+            <span>Werken bij Lumi</span>
+            <h2 id="careers-title">Rust in je werk.<br>Ruimte om te groeien.</h2>
+            <p>
+              Bij Lumi Support geloven we dat rust en betrokkenheid hand in hand gaan. We zoeken mensen
+              die zorgvuldig werken, graag meedenken en zich thuis voelen in de wereld van kinderopvang.
+            </p>
+          </div>
+
+          <div class="career-values">
+            <article v-for="value in careerValues" :key="value.title" class="career-value">
+              <span class="career-value-icon" aria-hidden="true">
+                <FontAwesomeIcon :icon="value.icon" />
+              </span>
+              <h3>{{ value.title }}</h3>
+              <p>{{ value.text }}</p>
+            </article>
+          </div>
+        </section>
+
         <footer class="closing-section">
           <div class="closing-main">
             <div class="closing-copy">
@@ -493,6 +544,7 @@ onBeforeUnmount(() => {
                   <button type="button" @click="scrollToServices">Onze diensten</button>
                   <button type="button" @click="scrollToTeam">Ons team</button>
                   <button type="button" @click="scrollToContact">Kennismaken</button>
+                  <button type="button" @click="scrollToCareers">Werken bij</button>
                 </div>
               </nav>
 

@@ -158,16 +158,6 @@ button {
   line-height: 1;
 }
 
-.services-heading h2::after {
-  position: absolute;
-  bottom: -0.85rem;
-  left: 0.3rem;
-  width: clamp(6rem, 8vw, 9.5rem);
-  height: 0.55rem;
-  background: white;
-  content: '';
-}
-
 .services-grid {
   display: grid;
   flex: 1;
@@ -544,6 +534,82 @@ button {
   text-transform: uppercase;
 }
 
+.careers-section {
+  display: grid;
+  min-height: 72svh;
+  padding: clamp(5rem, 8vw, 8rem) var(--page-gutter);
+  background: var(--lumi-yellow);
+  color: var(--lumi-navy);
+  grid-template-columns: minmax(24rem, 0.82fr) minmax(36rem, 1.18fr);
+  align-items: center;
+  gap: clamp(4rem, 8vw, 9rem);
+}
+
+.careers-intro>span {
+  display: block;
+  margin-bottom: 1.5rem;
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+}
+
+.careers-intro h2 {
+  position: relative;
+  margin: 0;
+  font-size: clamp(2.6rem, 4vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.02;
+}
+
+.careers-intro p {
+  max-width: 34rem;
+  margin: 2.8rem 0 0;
+  font-size: clamp(1rem, 1.15vw, 1.15rem);
+  line-height: 1.55;
+}
+
+.career-values {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 1.6vw, 1.6rem);
+}
+
+.career-value {
+  min-height: clamp(17rem, 28vw, 23rem);
+  padding: clamp(1.4rem, 2.2vw, 2.2rem);
+  border-radius: 1rem;
+  background: rgba(255, 255, 255, 0.97);
+  color: var(--lumi-navy);
+  box-shadow: 0 1rem 2.5rem rgba(8, 35, 63, 0.08);
+}
+
+.career-value-icon {
+  display: grid;
+  width: clamp(2.6rem, 3vw, 3.1rem);
+  height: clamp(2.6rem, 3vw, 3.1rem);
+  border-radius: 50%;
+  background: #fcebb3;
+  color: #8a661d;
+  font-size: clamp(0.98rem, 1.15vw, 1.2rem);
+  place-items: center;
+}
+
+.career-value h3 {
+  margin: 1.5rem 0 0;
+  font-size: clamp(1.12rem, 1.35vw, 1.4rem);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.12;
+}
+
+.career-value p {
+  margin: 1rem 0 0;
+  font-size: clamp(0.94rem, 1.08vw, 1.08rem);
+  line-height: 1.52;
+}
+
 .closing-section {
   display: grid;
   min-height: 58svh;
@@ -807,13 +873,7 @@ button {
 
   .mobile-copy-contact {
     visibility: hidden;
-    color: white;
     opacity: 0;
-  }
-
-  .mobile-copy-contact h2,
-  .mobile-copy.mobile-copy-contact h2 em {
-    color: white;
   }
 
   .mobile-copy h2 {
@@ -1001,6 +1061,62 @@ button {
     font-size: 0.78rem;
     font-weight: 800;
     text-transform: uppercase;
+  }
+
+  .careers-section {
+    min-height: 0;
+    padding: 5.5rem 1.25rem;
+    grid-template-columns: 1fr;
+    gap: 3.5rem;
+  }
+
+  .careers-intro>span {
+    margin-bottom: 1rem;
+    font-size: 0.7rem;
+  }
+
+  .careers-intro h2 {
+    font-size: clamp(2.25rem, 10.5vw, 3.45rem);
+  }
+
+  .careers-intro h2::after {
+    bottom: -0.7rem;
+    height: 0.4rem;
+  }
+
+  .careers-intro p {
+    margin-top: 2.2rem;
+    font-size: 0.92rem;
+  }
+
+  .career-values {
+    grid-template-columns: 1fr;
+    gap: 0.85rem;
+  }
+
+  .career-value {
+    display: grid;
+    min-height: 0;
+    padding: 1.25rem;
+    grid-template-columns: 2rem minmax(0, 1fr);
+    gap: 0 0.85rem;
+  }
+
+  .career-value-icon {
+    width: 2rem;
+    height: 2rem;
+    font-size: 0.78rem;
+    grid-row: 1 / span 2;
+  }
+
+  .career-value h3 {
+    margin: 0;
+    font-size: 1.05rem;
+  }
+
+  .career-value p {
+    margin: 0.55rem 0 0;
+    font-size: 0.86rem;
   }
 
   .closing-section {
