@@ -1,5 +1,16 @@
 <script setup lang="ts">
 import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import {
+  faCalendarDays,
+  faFileInvoiceDollar,
+  faFileSignature,
+  faLaptopCode,
+  faLightbulb,
+  faListCheck,
+  faMoneyCheckDollar,
+  faUserPlus
+} from '@fortawesome/free-solid-svg-icons'
 import gsap from 'gsap'
 import { ScrollSmoother } from 'gsap/ScrollSmoother'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
@@ -21,14 +32,54 @@ const menuOpen = ref(false)
 const activeService = ref(0)
 
 const services = [
-  { number: '01', title: 'Planning', text: 'Grip op bezetting, roosters en de dagelijkse praktijk.' },
-  { number: '02', title: 'Oudercommunicatie', text: 'Heldere, zorgvuldige communicatie die vertrouwen geeft.' },
-  { number: '03', title: 'Facturatie', text: 'Een correct en overzichtelijk facturatieproces.' },
-  { number: '04', title: 'Debiteurenbeheer', text: 'Persoonlijke opvolging met aandacht voor de relatie.' },
-  { number: '05', title: 'Administratie', text: 'Een administratie die klopt en altijd inzicht biedt.' },
-  { number: '06', title: 'Continuïteit', text: 'Extra capaciteit en kennis precies wanneer die nodig is.' },
-  { number: '07', title: 'Processen', text: 'Praktische ondersteuning voor duidelijke en werkbare processen.' },
-  { number: '08', title: 'Ondersteuning', text: 'Flexibele ondersteuning die aansluit op uw organisatie.' }
+  {
+    id: 'inschrijvingen',
+    icon: faUserPlus,
+    title: ['Inschrijvingen &', 'Oudercommunicatie'],
+    text: 'Wij verzorgen het volledige inschrijfproces en onderhouden toegankelijke communicatie via e-mail en telefoon.'
+  },
+  {
+    id: 'planning',
+    icon: faCalendarDays,
+    title: ['Planning &', 'Groepsbezetting'],
+    text: 'Optimale planning van kinderen en groepen voor een gezonde bezettingsgraad en efficiënte inzet.'
+  },
+  {
+    id: 'wachtlijstbeheer',
+    icon: faListCheck,
+    title: ['Professioneel', 'wachtlijstbeheer'],
+    text: 'Professioneel beheer van wachtlijsten op basis van uw specifieke prioriteiten en regels.'
+  },
+  {
+    id: 'contracten',
+    icon: faFileSignature,
+    title: ['Opvolgen digitale', 'contracten'],
+    text: 'Opstellen, versturen en nauwgezet opvolgen van digitale contracten voor uw cliënten.'
+  },
+  {
+    id: 'facturatie',
+    icon: faFileInvoiceDollar,
+    title: ['Facturatie &', 'Subsidies'],
+    text: 'Nauwkeurige facturatie (inclusief correctieronden) en verantwoording van subsidies zoals SMI en peuteropvang.'
+  },
+  {
+    id: 'debiteurenadministratie',
+    icon: faMoneyCheckDollar,
+    title: ['Koppeling met', 'debiteurenadministratie'],
+    text: 'Strakke opvolging van betalingen en een naadloze koppeling met Payt voor uw administratie.'
+  },
+  {
+    id: 'advies',
+    icon: faLightbulb,
+    title: ['Ondersteuning bij', 'advies & beleid'],
+    text: 'Deskundig advies en ondersteuning bij beleidsontwikkeling binnen de kinderopvangsector.'
+  },
+  {
+    id: 'applicatiebeheer',
+    icon: faLaptopCode,
+    title: ['Applicatiebeheer', 'via Jaamo'],
+    text: 'Volledig beheer van Jaamo, inclusief KOI-aanlevering en technische ondersteuning.'
+  }
 ]
 
 let smoother: ScrollSmoother | null = null
@@ -260,7 +311,7 @@ onBeforeUnmount(() => {
               <div class="services-grid">
                 <article
                   v-for="(service, index) in services"
-                  :key="service.number"
+                  :key="service.id"
                   class="service-card"
                   :class="{ 'is-active': activeService === index }"
                 >
@@ -271,8 +322,12 @@ onBeforeUnmount(() => {
                     :aria-controls="`service-panel-${index}`"
                     @click="activeService = index"
                   >
-                    <span class="service-number">{{ service.number }}</span>
-                    <h3>{{ service.title }}</h3>
+                    <span class="service-icon" aria-hidden="true">
+                      <FontAwesomeIcon :icon="service.icon" />
+                    </span>
+                    <h3>
+                      <span v-for="titleLine in service.title" :key="titleLine">{{ titleLine }}</span>
+                    </h3>
                     <span class="service-toggle" aria-hidden="true">+</span>
                   </button>
                   <div :id="`service-panel-${index}`" class="service-card-body">
