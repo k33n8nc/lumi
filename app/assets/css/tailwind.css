@@ -898,9 +898,11 @@ button {
 
   .mobile-card-viewport {
     width: 100%;
+    height: min(100%, 31rem);
     min-height: 0;
     overflow: hidden;
     border-radius: 1.5rem;
+    align-self: end;
   }
 
   .mobile-card-track {
