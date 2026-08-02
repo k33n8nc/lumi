@@ -117,7 +117,6 @@ onMounted(async () => {
         end: '+=260%',
         scrub: 0.8,
         pin: true,
-        anticipatePin: 1,
         invalidateOnRefresh: true
       }
     })
@@ -173,7 +172,7 @@ onBeforeUnmount(() => {
 <template>
   <section
     ref="transitionSection"
-    class="relative w-full h-[100svh] min-h-[42rem] overflow-hidden isolation-isolate bg-lumi-navy text-lumi-white"
+    class="relative w-full h-[100svh] min-h-[42rem] overflow-hidden isolation-isolate bg-lumi-navy text-lumi-white transform-gpu"
     aria-label="Introductie en diensten"
   >
     <!-- HERO LAYER -->
