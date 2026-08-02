@@ -1,19 +1,31 @@
-/* @theme {
-  --text-h1: clamp(2rem, 5vw, 4rem);
-  --text-h2: clamp(1.75rem, 3.5vw, 3rem);
-  --text-h3: clamp(1.25rem, 2.5vw, 2rem);
-} */
+/* Global Typography Tokens & Base Heading Styles */
+@theme {
+  --text-hero-title: clamp(3.15rem, 5.1vw, 5.35rem);
+  --text-section-title: clamp(2.6rem, 4vw, 4rem);
+  --text-card-title: clamp(1.08rem, 1.25vw, 1.28rem);
+  --text-body-lg: clamp(1rem, 1.18vw, 1.2rem);
+  --text-body-md: clamp(0.94rem, 1.08vw, 1.08rem);
+}
 
 @layer base {
   h1 {
-    @apply text-[2rem] md:text-[3rem] lg:text-[4rem] font-bold tracking-tight;
+    font-size: var(--text-hero-title);
+    font-weight: 600;
+    letter-spacing: -0.045em;
+    line-height: 1.08;
   }
 
   h2 {
-    @apply text-[1.5rem] md:text-[2.25rem] lg:text-[3rem] font-bold tracking-tight;
+    font-size: var(--text-section-title);
+    font-weight: 600;
+    letter-spacing: -0.04em;
+    line-height: 1;
   }
 
   h3 {
-    @apply text-[1.25rem] md:text-[1.75rem] lg:text-[2.25rem] font-semibold;
+    font-size: var(--text-card-title);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.12;
   }
 }

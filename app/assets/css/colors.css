@@ -1,9 +1,11 @@
 @theme {
-    --color-primary: #08233f;
-    --color-secondary: #ffd24a;
-    --color-lumi-navy: #08233f;
-    --color-lumi-yellow: #ffd24a;
-    --color-lumi-white: #f8f8f6;
+  --color-primary: #08233f;
+  --color-secondary: #ffd24a;
+  --color-lumi-navy: #08233f;
+  --color-lumi-yellow: #ffd24a;
+  --color-lumi-white: #f8f8f6;
+  --color-lumi-gold-bg: #fcebb3;
+  --color-lumi-gold-text: #8a661d;
 
-    --spacing-page-gutter: clamp(1.5rem, 8.8vw, 11rem);
+  --spacing-page-gutter: clamp(1.5rem, 8.8vw, 11rem);
 }
