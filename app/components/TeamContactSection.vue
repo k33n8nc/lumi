@@ -21,7 +21,7 @@ const scrollToContact = () => {
   if (!sectionRef.value) return
   const trigger = ScrollTrigger.getById('team-contact-transition')
   const target = trigger
-    ? trigger.start + (trigger.end - trigger.start) * 0.75
+    ? trigger.start + (trigger.end - trigger.start) * 0.8
     : sectionRef.value.offsetTop + window.innerHeight
   window.scrollTo({ top: target, behavior: 'smooth' })
 }
@@ -56,17 +56,17 @@ onMounted(async () => {
         id: 'team-contact-transition',
         trigger: sectionRef.value,
         start: 'top top',
-        end: '+=180%',
-        scrub: 0.8,
+        end: '+=100%',
+        scrub: 0.6,
         pin: true,
         invalidateOnRefresh: true
       }
     })
 
     timeline
-      // 1. Team copy slides left off-screen immediately on scroll start
-      .to('.team-copy', { xPercent: -120, duration: 0.2 }, 0)
-      // 2. Navy orb starts expanding immediately at scroll start
+      // 1. Team copy slides left off-screen starting at scroll start (position 0)
+      .to('.team-copy', { xPercent: -120, duration: 0.6 }, 0)
+      // 2. Navy orb expands to fill full screen with dark navy (duration: 0.75)
       .to(
         '.navy-orb',
         {
@@ -76,26 +76,26 @@ onMounted(async () => {
           xPercent: -50,
           yPercent: -50,
           scale: coverScale,
-          duration: 0.5
+          duration: 0.75
         },
         0
       )
       // 3. Reveal parent contact layer container right at scroll start (0.0)
       .set('.contact-layer', { visibility: 'visible' }, 0)
-      .to('.contact-layer', { opacity: 1, duration: 0.05 }, 0)
-      // 4. Logo reveals immediately right as circle starts growing (0.01)
+      .to('.contact-layer', { opacity: 1, duration: 0.1 }, 0)
+      // 4. Logo reveals immediately right as circle starts growing (0.02)
       .fromTo(
         '.lumi-logo-img',
         { opacity: 0, scale: 0.85 },
-        { opacity: 1, scale: 1, duration: 0.28 },
-        0.01
+        { opacity: 1, scale: 1, duration: 0.65 },
+        0.02
       )
-      // 5. Contact info reveals immediately after (0.05)
+      // 5. "Laten we kennismaken" slides in from the right in sync with team-copy (duration: 0.65)
       .fromTo(
         '.contact-info',
-        { opacity: 0, x: 40 },
-        { opacity: 1, x: 0, duration: 0.32 },
-        0.05
+        { opacity: 0, xPercent: 80 },
+        { opacity: 1, xPercent: 0, duration: 0.65 },
+        0.04
       )
   }, sectionRef.value ?? undefined)
 
@@ -113,7 +113,7 @@ onBeforeUnmount(() => {
     class="relative w-full h-[100svh] min-h-[42rem] overflow-hidden isolation-isolate bg-white text-lumi-navy flex items-center justify-center transform-gpu"
     aria-label="Team en kennismaken"
   >
-    <!-- LAYER 1: TEAM COPY (Starts Visible, slides left faster immediately on scroll) -->
+    <!-- LAYER 1: TEAM COPY (Starts Visible, slides left on scroll) -->
     <div
       id="ons-team"
       class="team-layer absolute inset-0 z-[2] flex items-center px-6 md:px-16 py-16 text-lumi-navy will-change-transform"
