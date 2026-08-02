@@ -13,6 +13,7 @@ useHead({
 
 const heroServicesRef = ref<{ scrollToServices: () => void } | null>(null)
 const teamContactRef = ref<{ scrollToTeam: () => void, scrollToContact: () => void } | null>(null)
+const careersRef = ref<{ scrollToCareers: () => void } | null>(null)
 
 const onNavigate = (sectionId: string) => {
   if (sectionId === 'hero') {
@@ -23,6 +24,8 @@ const onNavigate = (sectionId: string) => {
     teamContactRef.value?.scrollToTeam()
   } else if (sectionId === 'contact') {
     teamContactRef.value?.scrollToContact()
+  } else if (sectionId === 'werken-bij') {
+    careersRef.value?.scrollToCareers()
   } else {
     const el = document.getElementById(sectionId)
     if (el) {
@@ -40,7 +43,13 @@ const onNavigate = (sectionId: string) => {
     <!-- Hero & Services Pinned GSAP Transition Section -->
     <HeroServicesSection ref="heroServicesRef" />
 
-    <!-- Team & Contact Vertical Parallax Section -->
+    <!-- Team & Contact Navy Orb Transition Section -->
     <TeamContactSection ref="teamContactRef" />
+
+    <!-- Careers Section -->
+    <CareersSection ref="careersRef" />
+
+    <!-- Footer Section -->
+    <AppFooter @navigate="onNavigate" />
   </main>
 </template>
