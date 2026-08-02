@@ -46,9 +46,9 @@ defineExpose({
         <span class="text-xs uppercase tracking-widest text-lumi-gold-text font-bold">
           Werken bij Lumi
         </span>
-        <h2 id="careers-title">
+        <h1 id="careers-title">
           Rust in je werk.<br>Ruimte om te groeien.
-        </h2>
+        </h1>
         <p class="text-body-lg text-slate-700 leading-relaxed mt-2">
           Bij Lumi Support geloven we dat rust en betrokkenheid hand in hand gaan. We zoeken mensen
           die zorgvuldig werken, graag meedenken en zich thuis voelen in de wereld van kinderopvang.

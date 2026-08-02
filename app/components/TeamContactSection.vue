@@ -120,9 +120,9 @@ onBeforeUnmount(() => {
     >
       <div class="w-full max-w-[100rem] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-16 items-center">
         <div class="team-copy lg:col-span-6 flex flex-col gap-6 will-change-transform">
-          <h2>
+          <h1>
             Het team achter<br><em class="text-lumi-yellow not-italic">Lumi</em> Support
-          </h2>
+          </h1>
           <p class="text-body-lg text-slate-700 leading-relaxed max-w-lg">
             Onze persoonlijke aanpak maakt het verschil. Wij zijn een klein team met een grote focus
             op uw kwaliteit en rust.
@@ -146,9 +146,9 @@ onBeforeUnmount(() => {
         <!-- Left Side: Contact Info -->
         <div class="contact-info lg:col-span-7 flex flex-col gap-8 will-change-transform">
           <div>
-            <h2 class="text-lumi-yellow">
+            <h1 class="text-lumi-yellow">
               Laten we kennismaken
-            </h2>
+            </h1>
             <p class="mt-4 text-body-lg text-slate-300 leading-relaxed max-w-xl">
               Wilt u weten wat Lumi Support voor uw kinderopvangorganisatie kan betekenen?
               Neem vandaag nog contact met ons op.

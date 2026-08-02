@@ -24,7 +24,7 @@ const onNavigate = (sectionId: string) => {
     teamContactRef.value?.scrollToTeam()
   } else if (sectionId === 'contact') {
     teamContactRef.value?.scrollToContact()
-  } else if (sectionId === 'werken-bij') {
+  } else if (sectionId === 'werken-bij' || sectionId === 'careers') {
     careersRef.value?.scrollToCareers()
   } else {
     const el = document.getElementById(sectionId)
