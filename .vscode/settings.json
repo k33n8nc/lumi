@@ -1,0 +1,7 @@
+{
+    "emmet.includeLanguages": {
+        "vue": "html"
+    },
+    "emmet.triggerExpansionOnTab": true,
+    "css.lint.unknownAtRules": "ignore"
+}

@@ -1,303 +1,588 @@
-<script setup>
-import { onMounted, ref } from 'vue'
+<script setup lang="ts">
+import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import {
+  faArrowTrendUp,
+  faCalendarDays,
+  faEnvelope,
+  faFileInvoiceDollar,
+  faFileSignature,
+  faHandshake,
+  faHeart,
+  faLaptopCode,
+  faLightbulb,
+  faListCheck,
+  faLocationDot,
+  faMoneyCheckDollar,
+  faPhone,
+  faUserPlus
+} from '@fortawesome/free-solid-svg-icons'
 import gsap from 'gsap'
+import { ScrollSmoother } from 'gsap/ScrollSmoother'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-// Register GSAP plugins on client-side
-if (process.client) {
-  gsap.registerPlugin(ScrollTrigger)
-}
-
 useHead({
-  title: 'Lumi | Helder in Kinderopvang',
+  title: 'Lumi | Helderheid in uw organisatie',
   meta: [
-    { name: 'description', content: 'Lumi Support staat naast kinderopvangorganisaties die rust, overzicht en continuïteit zoeken.' }
+    {
+      name: 'description',
+      content: 'Lumi Support brengt rust, overzicht en continuïteit in kinderopvangorganisaties.'
+    }
   ]
 })
 
-// Team members with diverse roles to replace duplicates
-const team = [
-  { name: 'Ailko Treebusch', role: 'Eigenaar & Oprichter', icon: '👤' },
-  { name: 'Linda de Vries', role: 'Senior Planner', icon: '👩‍💼' },
-  { name: 'Mark de Jong', role: 'Financieel Specialist', icon: '👨‍💼' },
-  { name: 'Annelies Bakker', role: 'Debiteurenbeheer', icon: '👩‍💻' }
+const transitionSection = ref<HTMLElement | null>(null)
+const horizontalSection = ref<HTMLElement | null>(null)
+const mobileHorizontalSection = ref<HTMLElement | null>(null)
+const careersSection = ref<HTMLElement | null>(null)
+const menuOpen = ref(false)
+const activeService = ref(0)
+
+const services = [
+  {
+    id: 'inschrijvingen',
+    icon: faUserPlus,
+    title: ['Inschrijvingen &', 'Oudercommunicatie'],
+    text: 'Wij verzorgen het volledige inschrijfproces en onderhouden toegankelijke communicatie via e-mail en telefoon.'
+  },
+  {
+    id: 'planning',
+    icon: faCalendarDays,
+    title: ['Planning &', 'Groepsbezetting'],
+    text: 'Optimale planning van kinderen en groepen voor een gezonde bezettingsgraad en efficiënte inzet.'
+  },
+  {
+    id: 'wachtlijstbeheer',
+    icon: faListCheck,
+    title: ['Professioneel', 'wachtlijstbeheer'],
+    text: 'Professioneel beheer van wachtlijsten op basis van uw specifieke prioriteiten en regels.'
+  },
+  {
+    id: 'contracten',
+    icon: faFileSignature,
+    title: ['Opvolgen digitale', 'contracten'],
+    text: 'Opstellen, versturen en nauwgezet opvolgen van digitale contracten voor uw cliënten.'
+  },
+  {
+    id: 'facturatie',
+    icon: faFileInvoiceDollar,
+    title: ['Facturatie &', 'Subsidies'],
+    text: 'Nauwkeurige facturatie (inclusief correctieronden) en verantwoording van subsidies zoals SMI en peuteropvang.'
+  },
+  {
+    id: 'debiteurenadministratie',
+    icon: faMoneyCheckDollar,
+    title: ['Koppeling met', 'debiteurenadministratie'],
+    text: 'Strakke opvolging van betalingen en een naadloze koppeling met Payt voor uw administratie.'
+  },
+  {
+    id: 'advies',
+    icon: faLightbulb,
+    title: ['Ondersteuning bij', 'advies & beleid'],
+    text: 'Deskundig advies en ondersteuning bij beleidsontwikkeling binnen de kinderopvangsector.'
+  },
+  {
+    id: 'applicatiebeheer',
+    icon: faLaptopCode,
+    title: ['Applicatiebeheer', 'via Jaamo'],
+    text: 'Volledig beheer van Jaamo, inclusief KOI-aanlevering en technische ondersteuning.'
+  }
 ]
 
-// Method to programmatic scroll on CTA click
-const scrollToExpertises = () => {
-  if (process.client) {
-    const container = document.querySelector('#morph-container')
-    if (container) {
-      const scrollPos = container.offsetTop + (window.innerHeight * 0.8)
-      window.scrollTo({
-        top: scrollPos,
-        behavior: 'smooth'
-      })
-    }
+const careerValues = [
+  {
+    icon: faHandshake,
+    title: 'Flexibiliteit & vertrouwen',
+    text: 'Vrijheid om je werk goed in te richten, met duidelijke afspraken en vertrouwen als basis.'
+  },
+  {
+    icon: faArrowTrendUp,
+    title: 'Persoonlijke groei',
+    text: 'Ruimte om te leren, initiatief te nemen en samen onze dienstverlening steeds beter te maken.'
+  },
+  {
+    icon: faHeart,
+    title: 'Werk met betekenis',
+    text: 'Met jouw aandacht help je kinderopvang-organisaties iedere dag vooruit.'
   }
+]
+
+let smoother: ScrollSmoother | null = null
+let animationContext: gsap.Context | null = null
+let horizontalContext: gsap.Context | null = null
+
+const scrollToServices = () => {
+  if (!transitionSection.value) return
+
+  const transitionTrigger = ScrollTrigger.getById('hero-services-transition')
+  const target = transitionTrigger
+    ? transitionTrigger.start + (transitionTrigger.end - transitionTrigger.start) * 0.97
+    : transitionSection.value.offsetTop + window.innerHeight * 1.75
+  window.scrollTo({ top: target, behavior: 'smooth' })
 }
 
-onMounted(() => {
-  if (process.client) {
-    // Single pinned morphing timeline combining Hero and Expertises
-    const morphTl = gsap.timeline({
+const scrollToTop = () => {
+  menuOpen.value = false
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+const scrollToTeam = () => {
+  menuOpen.value = false
+  const horizontalTrigger = ScrollTrigger.getById('team-contact-transition')
+  const section = window.matchMedia('(max-width: 780px)').matches
+    ? mobileHorizontalSection.value
+    : horizontalSection.value
+  const fallback = section ? window.scrollY + section.getBoundingClientRect().top : 0
+  const target = horizontalTrigger?.start ?? fallback
+  window.scrollTo({ top: target, behavior: 'smooth' })
+}
+
+const scrollToContact = () => {
+  menuOpen.value = false
+  const horizontalTrigger = ScrollTrigger.getById('team-contact-transition')
+  const isMobile = window.matchMedia('(max-width: 780px)').matches
+  const section = isMobile ? mobileHorizontalSection.value : horizontalSection.value
+  const fallback = section ? window.scrollY + section.getBoundingClientRect().top : 0
+  const target = horizontalTrigger
+    ? isMobile
+      ? horizontalTrigger.start + (horizontalTrigger.end - horizontalTrigger.start) * 0.5
+      : horizontalTrigger.end
+    : fallback
+  window.scrollTo({ top: target, behavior: 'smooth' })
+}
+
+const scrollToCareers = () => {
+  menuOpen.value = false
+  if (!careersSection.value) return
+
+  const target = window.scrollY + careersSection.value.getBoundingClientRect().top
+  window.scrollTo({ top: target, behavior: 'smooth' })
+}
+
+onMounted(async () => {
+  gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
+  await nextTick()
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  if (!prefersReducedMotion) {
+    smoother = ScrollSmoother.create({
+      wrapper: '#smooth-wrapper',
+      content: '#smooth-content',
+      smooth: 1.15,
+      effects: true,
+      normalizeScroll: true,
+      smoothTouch: 0.08
+    })
+  }
+
+  animationContext = gsap.context(() => {
+    if (prefersReducedMotion) {
+      gsap.set('.sun-orb', { opacity: 1, scale: 4, left: '50%', top: '50%' })
+      gsap.set('.hero-layer', { opacity: 0 })
+      gsap.set('.services-layer', { opacity: 1, visibility: 'visible' })
+      return
+    }
+
+    const coverScale = () => {
+      const diameter = Math.min(window.innerWidth, window.innerHeight) * 0.68
+      return (Math.hypot(window.innerWidth, window.innerHeight) / diameter) * 1.08
+    }
+
+    const timeline = gsap.timeline({
+      defaults: { ease: 'none' },
       scrollTrigger: {
-        trigger: '#morph-container',
+        id: 'hero-services-transition',
+        trigger: transitionSection.value,
         start: 'top top',
-        end: '+=130%', // Scroll distance to complete the morph transition
-        scrub: true,
+        end: '+=180%',
+        scrub: 0.8,
         pin: true,
+        anticipatePin: 1,
         invalidateOnRefresh: true
       }
     })
 
-    // Step 1: Hero content fades out and translates upwards
-    morphTl.to('.hero-content', {
-      opacity: 0,
-      y: -80,
-      duration: 0.3
-    }, 0)
-    .to('.hero-scroll-prompt', {
-      opacity: 0,
-      y: -20,
-      duration: 0.2
-    }, 0)
+    timeline
+      .to('.hero-layer', { opacity: 0, yPercent: -5, duration: 0.42 }, 0)
+      .fromTo(
+        '.sun-orb',
+        { opacity: 0, scale: 0.16, left: '50%', top: '50%' },
+        { opacity: 0.34, scale: 0.8, duration: 0.24 },
+        0
+      )
+      .to('.sun-orb', { opacity: 1, scale: 1.32, duration: 0.26 }, 0.24)
+      .to('.sun-orb', {
+        left: '50%',
+        top: '50%',
+        scale: coverScale,
+        duration: 0.42
+      }, 0.5)
+      .set('.services-layer', { visibility: 'visible' }, 0.58)
+      .fromTo(
+        '.services-layer',
+        { opacity: 0, y: 32 },
+        { opacity: 1, y: 0, duration: 0.27 },
+        0.66
+      )
+      .fromTo(
+        '.service-card',
+        { opacity: 0, y: 24 },
+        { opacity: 1, y: 0, duration: 0.22, stagger: 0.025 },
+        0.7
+      )
+  }, transitionSection.value ?? undefined)
 
-    // Step 2: Background shifts to white and Sunrise circle expands in center
-    .to('#morph-container', {
-      backgroundColor: '#ffffff',
-      duration: 0.5
-    }, 0.15)
-    .to('.sunrise-circle', {
-      scale: 1,
-      opacity: 1,
-      duration: 0.5,
-      ease: 'power1.out'
-    }, 0.15)
+  if (!prefersReducedMotion) {
+    horizontalContext = gsap.context(() => {
+      const media = gsap.matchMedia()
 
-    // Step 3: Navigation theme transitions from white to dark blue
-    .to('.nav-logo-text', {
-      color: '#0c2440',
-      duration: 0.4
-    }, 0.2)
-    .to('.nav-logo-img', {
-      filter: 'invert(13%) sepia(30%) saturate(2220%) hue-rotate(193deg) brightness(92%) contrast(97%)', // maps white to #0c2440
-      duration: 0.4
-    }, 0.2)
-    .to('.nav-contact-btn', {
-      color: '#0c2440',
-      borderColor: 'rgba(12, 36, 64, 0.2)',
-      duration: 0.4
-    }, 0.2)
+      media.add('(min-width: 781px)', () => {
+        gsap.to('.horizontal-track', {
+          xPercent: -50,
+          ease: 'none',
+          scrollTrigger: {
+            id: 'team-contact-transition',
+            trigger: horizontalSection.value,
+            start: 'top top',
+            end: '+=100%',
+            scrub: 0.8,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true
+          }
+        })
+      })
 
-    // Step 4: Expertises content slides in from below and fades in
-    .fromTo('.expertises-layer', 
-      { opacity: 0, y: 60 },
-      {
-        opacity: 1,
-        y: 0,
-        duration: 0.4,
-        ease: 'power2.out',
-        onStart: () => {
-          const el = document.querySelector('.expertises-layer')
-          if (el) el.style.pointerEvents = 'auto'
-          const hl = document.querySelector('.hero-content')
-          if (hl) hl.style.pointerEvents = 'none'
-        },
-        onReverseComplete: () => {
-          const el = document.querySelector('.expertises-layer')
-          if (el) el.style.pointerEvents = 'none'
-          const hl = document.querySelector('.hero-content')
-          if (hl) hl.style.pointerEvents = 'auto'
-        }
-      },
-      0.45
-    )
+      media.add('(max-width: 780px)', () => {
+        const timeline = gsap.timeline({
+          defaults: { ease: 'none' },
+          scrollTrigger: {
+            id: 'team-contact-transition',
+            trigger: mobileHorizontalSection.value,
+            start: 'top top',
+            end: '+=140%',
+            scrub: 0.65,
+            pin: true,
+            anticipatePin: 1,
+            invalidateOnRefresh: true
+          }
+        })
 
-    // ScrollTrigger entrance animation for Team section
-    gsap.fromTo('.team-card',
-      { opacity: 0, scale: 0.93, y: 20 },
-      {
-        opacity: 1,
-        scale: 1,
-        y: 0,
-        stagger: 0.08,
-        duration: 0.6,
-        scrollTrigger: {
-          trigger: '#team',
-          start: 'top 75%',
-          toggleActions: 'play none none none'
-        }
-      }
-    )
+        timeline
+          .to('.mobile-card-track', { xPercent: -66.6667, duration: 1 }, 0)
+          .to('.mobile-copy-team', { autoAlpha: 0, y: -12, duration: 0.12 }, 0.18)
+          .fromTo(
+            '.mobile-copy-contact',
+            { autoAlpha: 0, y: 12 },
+            { autoAlpha: 1, y: 0, duration: 0.12 },
+            0.28
+          )
+      })
+    })
   }
+
+  ScrollTrigger.refresh()
+})
+
+onBeforeUnmount(() => {
+  animationContext?.revert()
+  horizontalContext?.revert()
+  smoother?.kill()
+  ScrollTrigger.getAll().forEach(trigger => trigger.kill())
 })
 </script>
 
 <template>
-  <div class="min-h-screen text-white selection:bg-lumi-yellow selection:text-lumi-blue-dark relative overflow-x-hidden">
-    
-    <!-- Wrapper -->
-    <div id="scroll-wrapper" class="relative">
-      
-      <!-- Combined Morph Container (Pins Hero and morphs into Expertises) -->
-      <section id="morph-container" class="w-full h-screen bg-lumi-blue-dark relative overflow-hidden flex flex-col justify-between items-center px-6 py-12">
-        
-        <!-- Background Hero Glow Layer (fades out as sunrise starts) -->
-        <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(29,70,117,0.15)_0%,transparent_70%)] pointer-events-none hero-bg-glow"></div>
+  <button
+    class="menu-button"
+    type="button"
+    :aria-expanded="menuOpen"
+    aria-label="Menu openen"
+    @click="menuOpen = !menuOpen"
+  >
+    <span />
+    <span />
+    <span />
+  </button>
 
-        <!-- The Sunrise Circle (expands behind the cards) -->
-        <div class="sunrise-circle absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[700px] md:w-[900px] md:h-[900px] rounded-full bg-lumi-yellow pointer-events-none scale-0 opacity-0 z-0"></div>
+  <Transition name="menu-fade">
+    <nav v-if="menuOpen" class="menu-panel" aria-label="Hoofdnavigatie">
+      <button type="button" @click="scrollToTop">Home</button>
+      <button type="button" @click="menuOpen = false; scrollToServices()">Onze diensten</button>
+      <button type="button" @click="scrollToTeam">Ons team</button>
+      <button type="button" @click="scrollToContact">Kennismaken</button>
+      <button type="button" @click="scrollToCareers">Werken bij</button>
+    </nav>
+  </Transition>
 
-        <!-- Navigation Bar (Stays on screen but shifts colors) -->
-        <div class="w-full max-w-7xl flex justify-between items-center h-16 relative z-30">
-          <div class="flex items-center gap-3">
-            <div class="flex items-center justify-center p-1 bg-white/5 border border-white/10 rounded-lg">
-              <img src="~/assets/images/logo.png" alt="Lumi" class="h-6 w-auto filter invert brightness-200 nav-logo-img" />
-            </div>
-            <div class="flex flex-col text-left">
-              <span class="font-bold text-sm tracking-tight text-white nav-logo-text">LUMI</span>
-              <span class="text-[8px] font-semibold tracking-wider text-zinc-400 uppercase">Helder in kinderopvang</span>
+  <div id="smooth-wrapper">
+    <div id="smooth-content">
+      <main>
+        <section ref="transitionSection" class="transition-stage" aria-label="Introductie en diensten">
+          <div class="hero-layer">
+            <div class="hero-copy">
+              <h1>Lumi brengt <em>helderheid</em><br>in uw organisatie.</h1>
+              <p>
+                Lumi Support staat naast kinderopvangorganisaties die rust, overzicht en continuïteit zoeken.
+                Met jarenlange praktijkervaring binnen de kinderopvang weten wij precies waar de uitdagingen
+                liggen - van planning en oudercommunicatie tot facturatie en debiteurenbeheer.
+              </p>
+              <button class="hero-cta" type="button" @click="scrollToServices">
+                Bekijk onze diensten
+              </button>
             </div>
           </div>
-          <a 
-            href="mailto:info@lumi-support.nl" 
-            class="border border-white/20 hover:border-lumi-yellow hover:text-lumi-yellow px-4 py-2 rounded-xl text-xs tracking-wider font-semibold transition-colors uppercase nav-contact-btn"
-          >
-            CONTACT
-          </a>
-        </div>
 
-        <!-- Hero Content Layer -->
-        <div class="max-w-4xl my-auto space-y-8 relative z-20 py-12 hero-content">
-          <h1 class="text-4xl sm:text-5xl lg:text-7xl font-extrabold tracking-tight leading-[1.15]">
-            Lumi brengt <span class="bg-gradient-to-r from-lumi-yellow via-amber-300 to-white bg-clip-text text-transparent">helderheid</span> in uw organisatie.
-          </h1>
-          <p class="text-zinc-300 text-base sm:text-lg max-w-2xl mx-auto leading-relaxed font-medium">
-            Lumi Support staat naast kinderopvangorganisaties die rust, overzicht en continuïteit zoeken. Met jarenlange praktijkervaring binnen de kinderopvang weten wij precies waar de uitdagingen liggen — van planning en oudercommunicatie tot facturatie en debiteurenbeheer.
-          </p>
-          <div class="pt-4">
-            <button 
-              @click="scrollToExpertises"
-              class="inline-block bg-lumi-yellow hover:bg-lumi-yellow-hover text-lumi-blue-dark font-extrabold px-10 py-4.5 rounded-full shadow-lg shadow-lumi-yellow/10 transition-all hover:scale-105 active:scale-95 text-xs tracking-wider cursor-pointer"
-            >
-              PLAN KENNISMAKING
-            </button>
-          </div>
-        </div>
+          <div class="sun-orb" aria-hidden="true" />
 
-        <!-- Expertises Layer (fades/slides in on top of sunrise) -->
-        <div class="expertises-layer absolute inset-0 flex flex-col justify-center items-center px-6 py-12 opacity-0 pointer-events-none z-10">
-          <div class="w-full max-w-6xl mt-10">
-            
-            <!-- Heading -->
-            <div class="mb-12 text-left">
-              <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight relative inline-block text-lumi-blue-dark">
-                Onze expertises
-                <span class="absolute bottom-[-10px] left-0 w-24 h-1.5 bg-lumi-blue-dark rounded-full"></span>
-              </h2>
-            </div>
+          <div id="diensten" class="services-layer">
+            <div class="services-inner">
+              <header class="services-heading">
+                <h2>Onze diensten</h2>
+              </header>
 
-            <!-- 6 clean empty cards as requested -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              <div 
-                v-for="i in 6" 
-                :key="i" 
-                class="bg-[#e5e7eb]/70 border border-zinc-200/40 rounded-2xl p-8 h-52 transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
-              >
-                <!-- Empty placeholder rectangle as requested -->
-              </div>
-            </div>
-
-          </div>
-        </div>
-
-        <!-- Scroll prompt -->
-        <div class="text-zinc-400 text-[10px] tracking-[0.2em] uppercase relative z-20 animate-bounce hero-scroll-prompt">
-          Scroll voor verheldering
-          <div class="text-base mt-1">↓</div>
-        </div>
-
-      </section>
-
-      <!-- Section 3: Lumi Team (Yellow Background, matching 03_team) -->
-      <section id="team" class="min-h-screen bg-lumi-yellow text-lumi-blue-dark py-28 px-6 flex flex-col justify-center items-center relative overflow-hidden">
-        
-        <!-- Faded Pattern Layer -->
-        <div class="absolute inset-0 bg-black/5 opacity-[0.03] pointer-events-none"></div>
-
-        <div class="w-full max-w-6xl relative z-10 space-y-16">
-          
-          <!-- Section Heading -->
-          <div class="text-left">
-            <h2 class="text-4xl sm:text-5xl font-extrabold tracking-tight relative inline-block text-lumi-blue">
-              Lumi team
-              <span class="absolute bottom-[-10px] left-0 w-24 h-1.5 bg-white rounded-full"></span>
-            </h2>
-          </div>
-
-          <!-- Team Cards Grid -->
-          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div 
-              v-for="(member, index) in team" 
-              :key="index" 
-              class="team-card bg-white/20 hover:bg-white/30 border border-white/35 rounded-2xl p-6 flex items-center gap-4 transition-all duration-300 hover:shadow-lg"
-            >
-              <!-- Avatar Circle Placeholder -->
-              <div class="w-14 h-14 rounded-full bg-white flex-shrink-0 shadow-sm flex items-center justify-center text-xl font-bold text-lumi-blue">
-                {{ member.icon }}
-              </div>
-              <div class="text-left">
-                <h4 class="font-extrabold text-base text-lumi-blue">{{ member.name }}</h4>
-                <span class="text-xs font-semibold text-lumi-blue-bright/70 block mt-0.5">{{ member.role }}</span>
+              <div class="services-grid">
+                <article
+                  v-for="(service, index) in services"
+                  :key="service.id"
+                  class="service-card"
+                  :class="{ 'is-active': activeService === index }"
+                >
+                  <button
+                    class="service-card-trigger"
+                    type="button"
+                    :aria-expanded="activeService === index"
+                    :aria-controls="`service-panel-${index}`"
+                    @click="activeService = index"
+                  >
+                    <span class="service-icon" aria-hidden="true">
+                      <FontAwesomeIcon :icon="service.icon" />
+                    </span>
+                    <h3>
+                      <span v-for="titleLine in service.title" :key="titleLine">{{ titleLine }}</span>
+                    </h3>
+                    <span class="service-toggle" aria-hidden="true">+</span>
+                  </button>
+                  <div :id="`service-panel-${index}`" class="service-card-body">
+                    <p>{{ service.text }}</p>
+                  </div>
+                </article>
               </div>
             </div>
           </div>
 
-          <!-- Call to Action bottom button -->
-          <div class="pt-8 text-center sm:text-left">
-            <a 
-              href="mailto:info@lumi-support.nl"
-              class="inline-block bg-lumi-blue hover:bg-lumi-blue-dark text-white font-extrabold px-10 py-4.5 rounded-full shadow-lg transition-all hover:scale-105 active:scale-95 text-xs tracking-wider"
-            >
-              ADMINISTRATIE EXPERTS
-            </a>
+        </section>
+
+        <section ref="horizontalSection" class="horizontal-stage" aria-label="Team en kennismaken">
+          <div class="horizontal-track">
+            <section id="ons-team" class="team-panel" aria-labelledby="team-title">
+              <div class="team-copy">
+                <h2 id="team-title">Het team achter<br><em>Lumi</em> Support</h2>
+                <p>
+                  Onze persoonlijke aanpak maakt het verschil. Wij zijn een klein team met een grote focus
+                  op uw kwaliteit en rust.
+                </p>
+              </div>
+
+              <div class="team-visual" aria-label="Ruimte voor toekomstige teamfoto">
+                <span>Team Lumi</span>
+              </div>
+            </section>
+
+            <section id="kennismaken" class="contact-panel" aria-labelledby="contact-title">
+              <div class="contact-shell">
+                <div class="contact-intro">
+                  <div>
+                    <h2 id="contact-title">Laten we kennismaken</h2>
+                    <p>
+                      Wilt u weten wat Lumi Support voor uw kinderopvangorganisatie kan betekenen?
+                      Neem vandaag nog contact met ons op.
+                    </p>
+                  </div>
+
+                  <div class="contact-options">
+                    <a href="mailto:contact@lumi-support.nl" class="contact-option">
+                      <span class="contact-icon" aria-hidden="true">
+                        <FontAwesomeIcon :icon="faEnvelope" />
+                      </span>
+                      <span><small>Mail ons</small>contact@lumi-support.nl</span>
+                    </a>
+                    <a href="tel:+31640937499" class="contact-option">
+                      <span class="contact-icon" aria-hidden="true">
+                        <FontAwesomeIcon :icon="faPhone" />
+                      </span>
+                      <span><small>Bel ons</small>+31 (0)6 40937499</span>
+                    </a>
+                  </div>
+                </div>
+
+                <form class="contact-form" @submit.prevent>
+                  <label>
+                    <span>Naam</span>
+                    <input type="text" name="name" autocomplete="name">
+                  </label>
+                  <label>
+                    <span>E-mailadres</span>
+                    <input type="email" name="email" autocomplete="email">
+                  </label>
+                  <label class="message-field">
+                    <span>Bericht</span>
+                    <textarea name="message" />
+                  </label>
+                  <button type="submit">Verstuur bericht</button>
+                </form>
+              </div>
+            </section>
           </div>
+        </section>
 
-        </div>
-      </section>
-
-      <!-- Minimal Dark Blue Footer -->
-      <footer class="bg-lumi-blue-dark text-zinc-400 py-12 px-6 border-t border-white/5 text-center text-xs tracking-wider">
-        <div class="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-6">
-          <div class="flex items-center gap-3">
-            <div class="flex items-center justify-center p-1 bg-white/5 border border-white/10 rounded-lg">
-              <img src="~/assets/images/logo.png" alt="Lumi" class="h-5 w-auto filter invert brightness-200" />
+        <section
+          ref="mobileHorizontalSection"
+          class="mobile-horizontal-stage"
+          aria-label="Team en kennismaken"
+        >
+          <div class="mobile-copy-zone">
+            <div class="mobile-copy mobile-copy-team">
+              <h2>Het team achter<br><em>Lumi</em> Support</h2>
+              <p>
+                Onze persoonlijke aanpak maakt het verschil. Wij zijn een klein team met een grote focus
+                op uw kwaliteit en rust.
+              </p>
             </div>
-            <span class="font-bold text-sm tracking-tight text-white">LUMI</span>
-          </div>
-          <div>
-            Contact: <a href="mailto:info@lumi-support.nl" class="text-white hover:text-lumi-yellow underline">info@lumi-support.nl</a>
-          </div>
-          <div>
-            &copy; 2026 Lumi Support. Alle rechten voorbehouden.
-          </div>
-        </div>
-      </footer>
 
+            <div class="mobile-copy mobile-copy-contact">
+              <h2>Laten we <em>kennismaken</em></h2>
+              <p>
+                Wilt u weten wat Lumi Support voor uw kinderopvangorganisatie kan betekenen?
+                Neem vandaag nog contact met ons op.
+              </p>
+            </div>
+          </div>
+
+          <div class="mobile-card-viewport">
+            <div class="mobile-card-track">
+              <article class="mobile-card mobile-team-card" aria-label="Ruimte voor toekomstige teamfoto">
+                <span>Team Lumi</span>
+              </article>
+
+              <article class="mobile-card mobile-contact-card">
+                <div class="mobile-contact-heading">
+                  <small>Neem direct contact op</small>
+                  <p>We denken graag met u mee.</p>
+                </div>
+
+                <div class="mobile-contact-options">
+                  <a href="mailto:contact@lumi-support.nl" class="mobile-contact-option">
+                    <span class="mobile-contact-icon" aria-hidden="true">
+                      <FontAwesomeIcon :icon="faEnvelope" />
+                    </span>
+                    <span><small>Mail ons</small>contact@lumi-support.nl</span>
+                  </a>
+                  <a href="tel:+31640937499" class="mobile-contact-option">
+                    <span class="mobile-contact-icon" aria-hidden="true">
+                      <FontAwesomeIcon :icon="faPhone" />
+                    </span>
+                    <span><small>Bel ons</small>+31 (0)6 40937499</span>
+                  </a>
+                </div>
+              </article>
+
+              <article class="mobile-card mobile-form-card">
+                <form class="mobile-contact-form" @submit.prevent>
+                  <label>
+                    <span>Naam</span>
+                    <input type="text" name="mobile-name" autocomplete="name">
+                  </label>
+                  <label>
+                    <span>E-mailadres</span>
+                    <input type="email" name="mobile-email" autocomplete="email">
+                  </label>
+                  <label>
+                    <span>Bericht</span>
+                    <textarea name="mobile-message" />
+                  </label>
+                  <button type="submit">Verstuur bericht</button>
+                </form>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section ref="careersSection" id="werken-bij" class="careers-section" aria-labelledby="careers-title">
+          <div class="careers-intro">
+            <span>Werken bij Lumi</span>
+            <h2 id="careers-title">Rust in je werk.<br>Ruimte om te groeien.</h2>
+            <p>
+              Bij Lumi Support geloven we dat rust en betrokkenheid hand in hand gaan. We zoeken mensen
+              die zorgvuldig werken, graag meedenken en zich thuis voelen in de wereld van kinderopvang.
+            </p>
+          </div>
+
+          <div class="career-values">
+            <article v-for="value in careerValues" :key="value.title" class="career-value">
+              <span class="career-value-icon" aria-hidden="true">
+                <FontAwesomeIcon :icon="value.icon" />
+              </span>
+              <h3>{{ value.title }}</h3>
+              <p>{{ value.text }}</p>
+            </article>
+          </div>
+        </section>
+
+        <footer class="closing-section">
+          <div class="closing-main">
+            <div class="closing-copy">
+              <p>Administratieve rust voor de kinderopvang.</p>
+            </div>
+
+            <div class="closing-columns">
+              <nav class="footer-navigation" aria-label="Footernavigatie">
+                <h2>Navigatie</h2>
+                <div class="footer-navigation-links">
+                  <button type="button" @click="scrollToTop">Home</button>
+                  <button type="button" @click="scrollToServices">Onze diensten</button>
+                  <button type="button" @click="scrollToTeam">Ons team</button>
+                  <button type="button" @click="scrollToContact">Kennismaken</button>
+                  <button type="button" @click="scrollToCareers">Werken bij</button>
+                </div>
+              </nav>
+
+              <div class="footer-contact">
+                <h2>Contact</h2>
+                <div class="footer-contact-links">
+                  <a href="mailto:contact@lumi-support.nl">
+                    <span class="footer-contact-icon" aria-hidden="true">
+                      <FontAwesomeIcon :icon="faEnvelope" />
+                    </span>
+                    <span>contact@lumi-support.nl</span>
+                  </a>
+                  <a href="tel:+31640937499">
+                    <span class="footer-contact-icon" aria-hidden="true">
+                      <FontAwesomeIcon :icon="faPhone" />
+                    </span>
+                    <span>+31 (0)6 409 37 499</span>
+                  </a>
+                  <div>
+                    <span class="footer-contact-icon" aria-hidden="true">
+                      <FontAwesomeIcon :icon="faLocationDot" />
+                    </span>
+                    <span>Landelijk werkzaam</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="closing-bottom">
+            <small>© 2026 Lumi Support B.V.</small>
+            <div>
+              <span>Privacybeleid</span>
+              <span>Voorwaarden</span>
+            </div>
+          </div>
+        </footer>
+      </main>
     </div>
   </div>
 </template>
-
-<style scoped>
-/* Scoped styles for high-performance transitions */
-.sunrise-circle {
-  will-change: transform, opacity;
-}
-.hero-content, .hero-scroll-prompt {
-  will-change: opacity, transform;
-}
-.expertises-layer {
-  will-change: opacity, transform;
-}
-</style>

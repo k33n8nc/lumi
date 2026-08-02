@@ -1,0 +1,9 @@
+@theme {
+    --color-primary: #08233f;
+    --color-secondary: #ffd24a;
+    --color-lumi-navy: #08233f;
+    --color-lumi-yellow: #ffd24a;
+    --color-lumi-white: #f8f8f6;
+
+    --spacing-page-gutter: clamp(1.5rem, 8.8vw, 11rem);
+}
