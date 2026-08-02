@@ -210,10 +210,10 @@ onBeforeUnmount(() => {
     >
       <div class="w-full max-w-[100rem] mx-auto">
         <header class="mb-8">
-          <h2>
+          <h1>
             Onze diensten
-          </h2>
-          <p class="max-w-[42rem] mt-6 text-body-lg">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque tempore voluptate explicabo? Repudiandae voluptatibus nemo eos, natus non cumque molestias explicabo consequuntur, vel amet eius officiis, iusto commodi accusantium aspernatur!</p>
+          </h1>
+          <p class="max-w-[42rem] mt-6 text-body-lg pl-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque tempore voluptate explicabo? Repudiandae voluptatibus nemo eos, natus non cumque molestias explicabo consequuntur, vel amet eius officiis, iusto commodi accusantium aspernatur!</p>
         </header>
 
         <div
@@ -231,7 +231,7 @@ onBeforeUnmount(() => {
             <h3 class="text-lumi-navy">
               <span v-for="titleLine in service.title" :key="titleLine" class="block">{{ titleLine }}</span>
             </h3>
-            <p class="text-slate-700 text-body-md mt-1 leading-relaxed">
+            <p class="text-body-md mt-1 leading-relaxed">
               {{ service.text }}
             </p>
           </article>
