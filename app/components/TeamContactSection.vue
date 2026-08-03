@@ -26,9 +26,7 @@ const scrollToTeam = () => {
 const scrollToContact = () => {
   if (!sectionRef.value) return
   const trigger = ScrollTrigger.getById('team-contact-transition')
-  const target = trigger
-    ? trigger.start + (trigger.end - trigger.start) * 0.8
-    : sectionRef.value.offsetTop + window.innerHeight
+  const target = trigger ? trigger.end : sectionRef.value.offsetTop + window.innerHeight
   const smoother = ScrollSmoother.get()
   if (smoother) {
     smoother.scrollTo(target, true)
@@ -75,8 +73,8 @@ onMounted(async () => {
     })
 
     timeline
-      // 1. Team copy slides left off-screen starting at scroll start (position 0)
-      .to('.team-copy', { xPercent: -120, duration: 0.6 }, 0)
+      // 1. Team copy slides left off-screen faster at scroll start (position 0)
+      .to('.team-copy', { xPercent: -140, duration: 0.5 }, 0)
       // 2. Navy orb expands to fill full screen with dark navy (duration: 0.75)
       .to(
         '.navy-orb',
@@ -172,7 +170,7 @@ onBeforeUnmount(() => {
               href="mailto:contact@lumi-support.nl"
               class="flex items-center gap-4 text-white hover:text-lumi-yellow transition-colors group no-underline"
             >
-              <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-white text-lumi-navy text-lg group-hover:scale-105 transition-transform" aria-hidden="true">
+              <span class="inline-grid place-items-center w-14 h-14 rounded-full bg-white text-lumi-navy text-2xl group-hover:scale-105 transition-transform" aria-hidden="true">
                 <FontAwesomeIcon :icon="faEnvelope" />
               </span>
               <div class="flex flex-col">
@@ -186,7 +184,7 @@ onBeforeUnmount(() => {
               href="tel:+31640937499"
               class="flex items-center gap-4 text-white hover:text-lumi-yellow transition-colors group no-underline"
             >
-              <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-white text-lumi-navy text-lg group-hover:scale-105 transition-transform" aria-hidden="true">
+              <span class="inline-grid place-items-center w-14 h-14 rounded-full bg-white text-lumi-navy text-2xl group-hover:scale-105 transition-transform" aria-hidden="true">
                 <FontAwesomeIcon :icon="faPhone" />
               </span>
               <div class="flex flex-col">

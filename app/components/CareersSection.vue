@@ -62,19 +62,19 @@ defineExpose({
       </div>
 
       <!-- Career Values Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
         <article
           v-for="value in careerValues"
           :key="value.title"
-          class="flex flex-col p-8 rounded-3xl bg-slate-50 border border-slate-100 hover:shadow-lg transition-all duration-200 gap-4"
+          class="flex flex-col p-6 md:p-7 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-lg transition-all duration-200 gap-3"
         >
-          <span class="inline-grid place-items-center w-14 h-14 rounded-2xl bg-lumi-gold-bg text-lumi-gold-text text-2xl" aria-hidden="true">
+          <span class="inline-grid place-items-center w-14 h-14 rounded-full bg-lumi-gold-bg text-lumi-gold-text text-2xl" aria-hidden="true">
             <FontAwesomeIcon :icon="value.icon" />
           </span>
-          <h3 class="text-xl font-bold text-lumi-navy mt-2">
+          <h3 class="text-lumi-navy">
             {{ value.title }}
           </h3>
-          <p class="text-slate-600 text-body-md leading-relaxed">
+          <p class="text-slate-600 text-body-md mt-1 leading-relaxed">
             {{ value.text }}
           </p>
         </article>

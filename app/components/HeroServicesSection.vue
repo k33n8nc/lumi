@@ -232,7 +232,7 @@ onBeforeUnmount(() => {
             :key="service.id"
             class="service-card flex flex-col p-6 md:p-7 rounded-2xl bg-white/97 text-lumi-navy shadow-lg gap-3 w-[290px] sm:w-[340px] md:w-[380px] flex-shrink-0"
           >
-            <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-lumi-gold-bg text-lumi-gold-text text-xl" aria-hidden="true">
+            <span class="inline-grid place-items-center w-14 h-14 rounded-full bg-lumi-gold-bg text-lumi-gold-text text-2xl" aria-hidden="true">
               <FontAwesomeIcon :icon="service.icon" />
             </span>
             <h3 class="text-lumi-navy">
