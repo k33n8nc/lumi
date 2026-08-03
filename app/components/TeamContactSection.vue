@@ -196,11 +196,11 @@ onBeforeUnmount(() => {
         </div>
 
         <!-- Right Side: Inflated White LUMI Bulb Logo -->
-        <div class="logo-wrapper lg:col-span-5 flex flex-col items-center justify-center text-center">
+        <div class="logo-wrapper lg:col-span-5 flex flex-col items-center justify-center text-center lg:mt-6">
           <img
             :src="logoImg"
             alt="Lumi Support Logo"
-            class="lumi-logo-img w-56 sm:w-72 md:w-84 lg:w-[26rem] h-auto mb-4 drop-shadow-xl will-change-transform"
+            class="lumi-logo-img w-56 sm:w-72 md:w-84 lg:w-[26rem] h-auto drop-shadow-xl will-change-transform"
           />
         </div>
       </div>
