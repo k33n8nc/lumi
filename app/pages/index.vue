@@ -1,5 +1,8 @@
 <script setup lang="ts">
-import { ref } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import gsap from 'gsap'
+import { ScrollSmoother } from 'gsap/ScrollSmoother'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 useHead({
   title: 'Lumi | Helderheid in uw organisatie',
@@ -15,9 +18,15 @@ const heroServicesRef = ref<{ scrollToServices: () => void } | null>(null)
 const teamContactRef = ref<{ scrollToTeam: () => void, scrollToContact: () => void } | null>(null)
 const careersRef = ref<{ scrollToCareers: () => void } | null>(null)
 
+let smoother: ScrollSmoother | null = null
+
 const onNavigate = (sectionId: string) => {
   if (sectionId === 'hero') {
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    if (smoother) {
+      smoother.scrollTo(0, true)
+    } else {
+      window.scrollTo({ top: 0, behavior: 'smooth' })
+    }
   } else if (sectionId === 'diensten') {
     heroServicesRef.value?.scrollToServices()
   } else if (sectionId === 'team') {
@@ -33,23 +42,52 @@ const onNavigate = (sectionId: string) => {
     }
   }
 }
+
+onMounted(async () => {
+  gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
+  await nextTick()
+
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+
+  if (!prefersReducedMotion) {
+    smoother = ScrollSmoother.create({
+      wrapper: '#smooth-wrapper',
+      content: '#smooth-content',
+      smooth: 1.15,
+      effects: true,
+      normalizeScroll: true,
+      smoothTouch: 0.08
+    })
+  }
+})
+
+onBeforeUnmount(() => {
+  smoother?.kill()
+})
 </script>
 
 <template>
-  <main class="min-h-screen bg-lumi-navy">
-    <!-- Header Navigation -->
+  <div>
+    <!-- Fixed Viewport Navigation (Outside smooth-content to prevent CSS transform trapping) -->
     <AppNavigation @navigate="onNavigate" />
 
-    <!-- Hero & Services Pinned GSAP Transition Section -->
-    <HeroServicesSection ref="heroServicesRef" />
+    <!-- GSAP Smooth Scroll Wrapper -->
+    <div id="smooth-wrapper">
+      <div id="smooth-content">
+        <main class="min-h-screen bg-lumi-navy">
+          <!-- Hero & Services Pinned GSAP Transition Section -->
+          <HeroServicesSection ref="heroServicesRef" />
 
-    <!-- Team & Contact Navy Orb Transition Section -->
-    <TeamContactSection ref="teamContactRef" />
+          <!-- Team & Contact Navy Orb Transition Section -->
+          <TeamContactSection ref="teamContactRef" />
 
-    <!-- Careers Section -->
-    <CareersSection ref="careersRef" />
+          <!-- Careers Section -->
+          <CareersSection ref="careersRef" />
 
-    <!-- Footer Section -->
-    <AppFooter @navigate="onNavigate" />
-  </main>
+          <!-- Footer Section -->
+          <AppFooter @navigate="onNavigate" />
+        </main>
+      </div>
+    </div>
+  </div>
 </template>

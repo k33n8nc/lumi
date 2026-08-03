@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faEnvelope, faLocationDot, faPhone } from '@fortawesome/free-solid-svg-icons'
+import logoImg from '~/assets/images/logo.png'
 
 const emit = defineEmits<{
   (e: 'navigate', sectionId: string): void
@@ -12,14 +13,16 @@ const emit = defineEmits<{
     <div class="w-full max-w-[100rem] mx-auto flex flex-col gap-16">
       <!-- Main Footer Grid -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
-        <!-- Tagline (Left) -->
-        <div class="lg:col-span-6 flex flex-col gap-4">
-          <span class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
-            Lumi Support
-          </span>
-          <p class="text-body-lg text-slate-300 max-w-md leading-relaxed">
+        <!-- Logo & Tagline (Left) -->
+        <div class="lg:col-span-6 flex flex-col items-start gap-4">
+          <img
+            :src="logoImg"
+            alt="Lumi Support Logo"
+            class="w-28 sm:w-36 md:w-40 h-auto -translate-x-6 sm:-translate-x-8 md:-translate-x-10"
+          >
+          <!-- <p class="text-body-lg text-slate-300 max-w-md leading-relaxed">
             Administratieve rust voor de kinderopvang.
-          </p>
+          </p> -->
         </div>
 
         <!-- Navigation & Contact Columns (Right) -->
