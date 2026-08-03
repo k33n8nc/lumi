@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faArrowTrendUp, faHandshake, faHeart } from '@fortawesome/free-solid-svg-icons'
+import { ScrollSmoother } from 'gsap/ScrollSmoother'
 
 const sectionRef = ref<HTMLElement | null>(null)
 
@@ -25,7 +26,12 @@ const careerValues = [
 
 const scrollToCareers = () => {
   if (!sectionRef.value) return
-  sectionRef.value.scrollIntoView({ behavior: 'smooth' })
+  const smoother = ScrollSmoother.get()
+  if (smoother) {
+    smoother.scrollTo(sectionRef.value, true)
+  } else {
+    sectionRef.value.scrollIntoView({ behavior: 'smooth' })
+  }
 }
 
 defineExpose({

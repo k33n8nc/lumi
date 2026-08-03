@@ -12,6 +12,7 @@ import {
   faUserPlus
 } from '@fortawesome/free-solid-svg-icons'
 import gsap from 'gsap'
+import { ScrollSmoother } from 'gsap/ScrollSmoother'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 const transitionSection = ref<HTMLElement | null>(null)
@@ -76,7 +77,12 @@ const scrollToServices = () => {
   const target = transitionTrigger
     ? transitionTrigger.start + (transitionTrigger.end - transitionTrigger.start) * 0.445
     : transitionSection.value.offsetTop + window.innerHeight * 1.4
-  window.scrollTo({ top: target, behavior: 'smooth' })
+  const smoother = ScrollSmoother.get()
+  if (smoother) {
+    smoother.scrollTo(target, true)
+  } else {
+    window.scrollTo({ top: target, behavior: 'smooth' })
+  }
 }
 
 defineExpose({
@@ -84,7 +90,7 @@ defineExpose({
 })
 
 onMounted(async () => {
-  gsap.registerPlugin(ScrollTrigger)
+  gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
   await nextTick()
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
@@ -212,7 +218,9 @@ onBeforeUnmount(() => {
           <h1>
             Onze diensten
           </h1>
-          <p class="max-w-[42rem] mt-6 text-body-lg pl-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque tempore voluptate explicabo? Repudiandae voluptatibus nemo eos, natus non cumque molestias explicabo consequuntur, vel amet eius officiis, iusto commodi accusantium aspernatur!</p>
+          <p class="max-w-[42rem] mt-6 text-body-lg pl-2">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque tempore voluptate explicabo? Repudiandae voluptatibus nemo eos, natus non cumque molestias explicabo consequuntur, vel amet eius officiis, iusto commodi accusantium aspernatur!
+          </p>
         </header>
 
         <div

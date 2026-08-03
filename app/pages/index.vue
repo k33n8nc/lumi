@@ -33,12 +33,16 @@ const onNavigate = (sectionId: string) => {
     teamContactRef.value?.scrollToTeam()
   } else if (sectionId === 'contact') {
     teamContactRef.value?.scrollToContact()
-  } else if (sectionId === 'werken-bij' || sectionId === 'careers') {
+  } else if (sectionId === 'werken-bij') {
     careersRef.value?.scrollToCareers()
   } else {
     const el = document.getElementById(sectionId)
     if (el) {
-      el.scrollIntoView({ behavior: 'smooth' })
+      if (smoother) {
+        smoother.scrollTo(el, true)
+      } else {
+        el.scrollIntoView({ behavior: 'smooth' })
+      }
     }
   }
 }

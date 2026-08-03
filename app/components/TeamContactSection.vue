@@ -3,6 +3,7 @@ import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons'
 import gsap from 'gsap'
+import { ScrollSmoother } from 'gsap/ScrollSmoother'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import logoImg from '~/assets/images/logo.png'
 
@@ -14,7 +15,12 @@ const scrollToTeam = () => {
   if (!sectionRef.value) return
   const trigger = ScrollTrigger.getById('team-contact-transition')
   const target = trigger ? trigger.start + 2 : sectionRef.value.offsetTop
-  window.scrollTo({ top: target, behavior: 'smooth' })
+  const smoother = ScrollSmoother.get()
+  if (smoother) {
+    smoother.scrollTo(target, true)
+  } else {
+    window.scrollTo({ top: target, behavior: 'smooth' })
+  }
 }
 
 const scrollToContact = () => {
@@ -23,7 +29,12 @@ const scrollToContact = () => {
   const target = trigger
     ? trigger.start + (trigger.end - trigger.start) * 0.8
     : sectionRef.value.offsetTop + window.innerHeight
-  window.scrollTo({ top: target, behavior: 'smooth' })
+  const smoother = ScrollSmoother.get()
+  if (smoother) {
+    smoother.scrollTo(target, true)
+  } else {
+    window.scrollTo({ top: target, behavior: 'smooth' })
+  }
 }
 
 defineExpose({
@@ -32,7 +43,7 @@ defineExpose({
 })
 
 onMounted(async () => {
-  gsap.registerPlugin(ScrollTrigger)
+  gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
   await nextTick()
 
   const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
