@@ -44,14 +44,7 @@ onMounted(async () => {
   gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
   await nextTick()
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
 
-  if (prefersReducedMotion) {
-    gsap.set('.team-copy', { xPercent: -120 })
-    gsap.set('.navy-orb', { opacity: 0 })
-    gsap.set('.contact-layer', { opacity: 1, visibility: 'visible' })
-    return
-  }
 
   animationContext = gsap.context(() => {
     const coverScale = () => {

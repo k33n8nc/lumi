@@ -51,16 +51,17 @@ onMounted(async () => {
   gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
   await nextTick()
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+  // Prevent mobile Safari address bar show/hide from thrashing ScrollTrigger refreshes
+  ScrollTrigger.config({ ignoreMobileResize: true })
 
-  if (!prefersReducedMotion) {
+  // Enable ScrollSmoother on desktop. On mobile touch devices, native momentum scrolling
+  // allows GSAP ScrollTrigger pins to run with 100% native GPU position: fixed hardware acceleration.
+  if (ScrollTrigger.isTouch !== 1) {
     smoother = ScrollSmoother.create({
       wrapper: '#smooth-wrapper',
       content: '#smooth-content',
       smooth: 1.15,
-      effects: true,
-      normalizeScroll: true,
-      smoothTouch: 0.08
+      effects: true
     })
   }
 })

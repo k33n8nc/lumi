@@ -93,15 +93,7 @@ onMounted(async () => {
   gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
   await nextTick()
 
-  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-
   animationContext = gsap.context(() => {
-    if (prefersReducedMotion) {
-      gsap.set('.sun-orb', { opacity: 1, scale: 4, left: '50%', top: '50%' })
-      gsap.set('.hero-layer', { opacity: 0 })
-      gsap.set('.services-layer', { opacity: 1, visibility: 'visible' })
-      return
-    }
 
     const coverScale = () => {
       const diameter = Math.min(window.innerWidth, window.innerHeight) * 0.68
