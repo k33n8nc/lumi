@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
   faCalendarDays,
@@ -11,12 +11,9 @@ import {
   faMoneyCheckDollar,
   faUserPlus
 } from '@fortawesome/free-solid-svg-icons'
-import gsap from 'gsap'
 import { ScrollSmoother } from 'gsap/ScrollSmoother'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-const servicesSection = ref<HTMLElement | null>(null)
-const servicesTrack = ref<HTMLElement | null>(null)
+const sectionRef = ref<HTMLElement | null>(null)
 
 const services = [
   {
@@ -69,109 +66,52 @@ const services = [
   }
 ]
 
-let animationContext: gsap.Context | null = null
-
 const scrollToServices = () => {
-  if (!servicesSection.value) return
-  const trigger = ScrollTrigger.getById('services-horizontal-track')
-  const target = trigger ? trigger.start : servicesSection.value.offsetTop
+  if (!sectionRef.value) return
   const smoother = ScrollSmoother.get()
   if (smoother) {
-    smoother.scrollTo(target, true)
+    smoother.scrollTo(sectionRef.value, true)
   } else {
-    window.scrollTo({ top: target, behavior: 'smooth' })
+    sectionRef.value.scrollIntoView({ behavior: 'smooth' })
   }
 }
 
 defineExpose({
   scrollToServices
 })
-
-onMounted(async () => {
-  gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
-  await nextTick()
-
-  animationContext = gsap.context(() => {
-    const getScrollAmount = () => {
-      if (!servicesTrack.value) return 0
-      const padding = window.innerWidth < 768 ? 32 : 128
-      return -(servicesTrack.value.scrollWidth - (window.innerWidth - padding))
-    }
-
-    const timeline = gsap.timeline({
-      defaults: { ease: 'none' },
-      scrollTrigger: {
-        id: 'services-horizontal-track',
-        trigger: servicesSection.value,
-        start: 'top top',
-        end: '+=180%',
-        scrub: 0.8,
-        pin: true,
-        anticipatePin: 1,
-        invalidateOnRefresh: true
-      }
-    })
-
-    if (servicesTrack.value) {
-      timeline.to(
-        servicesTrack.value,
-        {
-          x: getScrollAmount,
-          duration: 1,
-          ease: 'none'
-        },
-        0
-      )
-    }
-  }, servicesSection.value ?? undefined)
-
-  ScrollTrigger.refresh()
-})
-
-onBeforeUnmount(() => {
-  animationContext?.revert()
-})
 </script>
 
 <template>
-  <div class="w-full bg-lumi-yellow overflow-hidden">
-    <section
-      id="diensten"
-      ref="servicesSection"
-      class="relative w-full h-screen min-h-[42rem] overflow-hidden bg-lumi-yellow text-lumi-navy flex flex-col justify-center px-6 md:px-16 py-16 will-change-transform transform-gpu"
-      aria-label="Onze diensten"
-    >
-      <div class="w-full max-w-[100rem] mx-auto">
-        <header class="mb-8">
-          <h1>
-            Onze diensten
-          </h1>
-          <p class="max-w-[42rem] mt-6 text-body-lg pl-2">
-            Lumi Support ontzorgt kinderopvangorganisaties met gespecialiseerde administratieve, operationele en strategische ondersteuning.
-          </p>
-        </header>
+  <section
+    id="diensten"
+    ref="sectionRef"
+    class="w-full py-24 md:py-28 px-6 md:px-16 bg-lumi-yellow text-lumi-navy flex flex-col justify-center"
+    aria-label="Onze diensten"
+  >
+    <div class="w-full max-w-[100rem] mx-auto">
+      <header class="mb-10 md:mb-12">
+        <h1>
+          Dit nemen we uit handen
+        </h1>
+      </header>
 
-        <div
-          ref="servicesTrack"
-          class="services-track flex flex-nowrap gap-5 md:gap-6 will-change-transform"
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-fr gap-5 md:gap-6">
+        <article
+          v-for="service in services"
+          :key="service.id"
+          class="service-card flex flex-col h-full p-6 md:p-7 rounded-2xl bg-white/97 text-lumi-navy shadow-md hover:shadow-lg transition-all duration-200 gap-3"
         >
-          <article
-            v-for="service in services"
-            :key="service.id"
-            class="service-card flex flex-col p-6 md:p-7 rounded-2xl bg-white/97 text-lumi-navy shadow-lg gap-3 w-[290px] sm:w-[340px] md:w-[380px] flex-shrink-0"
-          >
-            <span class="inline-grid place-items-center w-14 h-14 rounded-full bg-lumi-gold-bg text-lumi-gold-text text-2xl" aria-hidden="true">
-              <FontAwesomeIcon :icon="service.icon" />
-            </span>
-            <h3 class="text-lumi-navy">
-              <span v-for="titleLine in service.title" :key="titleLine" class="block">{{ titleLine }}</span>
-            </h3>
-            <p class="text-body-md mt-1 leading-relaxed">
-              {{ service.text }}
-            </p>
-          </article>
-        </div>
+          <span class="inline-grid place-items-center w-14 h-14 rounded-full bg-lumi-gold-bg text-lumi-gold-text text-2xl" aria-hidden="true">
+            <FontAwesomeIcon :icon="service.icon" />
+          </span>
+          <h3 class="text-lumi-navy">
+            <span v-for="titleLine in service.title" :key="titleLine" class="block">{{ titleLine }}</span>
+          </h3>
+          <p class="text-body-md mt-1 leading-relaxed">
+            {{ service.text }}
+          </p>
+        </article>
       </div>
-    </section>
-  </div>
+    </div>
+  </section>
 </template>

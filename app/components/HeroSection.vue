@@ -76,7 +76,7 @@ const handleScrollToServices = () => {
         type="button"
         @click="handleScrollToServices"
       >
-        Bekijk onze diensten
+        Hier geloven wij in...
       </button>
     </div>
   </section>
