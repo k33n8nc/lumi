@@ -1,20 +1,25 @@
 <script setup lang="ts">
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+import { faChevronDown } from '@fortawesome/free-solid-svg-icons'
+
 const emit = defineEmits<{
+  (e: 'scrollToBeliefs'): void
   (e: 'scrollToServices'): void
 }>()
 
-const handleScrollToServices = () => {
-  emit('scrollToServices')
+const handleActionClick = () => {
+  emit('scrollToBeliefs')
 }
 </script>
 
 <template>
   <section
     id="hero"
-    class="relative w-full h-screen min-h-[42rem] flex flex-col justify-center items-center overflow-hidden bg-lumi-navy text-lumi-white px-6 py-20 md:py-16 select-none"
+    class="relative w-full h-screen min-h-[44rem] flex flex-col justify-center items-center overflow-hidden bg-lumi-navy text-lumi-white px-6 pt-12 pb-24 select-none"
     aria-label="Introductie"
   >
-    <div class="relative z-10 max-w-[62rem] text-center flex flex-col items-center">
+    <!-- HERO MAIN CONTENT (SHIFTED UPWARDS) -->
+    <div class="relative z-10 max-w-[62rem] text-center flex flex-col items-center -translate-y-4 sm:-translate-y-6 md:-translate-y-10">
       
       <!-- LOGO WITH SUBTLE LIGHT EFFECT -->
       <div class="relative flex flex-col items-center">
@@ -71,13 +76,22 @@ const handleScrollToServices = () => {
         Met jarenlange praktijkervaring binnen de kinderopvang weten wij precies waar de uitdagingen
         liggen - van planning en oudercommunicatie tot facturatie en debiteurenbeheer.
       </p>
-      <button
-        class="inline-flex items-center justify-center min-w-[18rem] mt-8 px-8 py-3.5 border-0 rounded-full bg-lumi-yellow text-lumi-navy font-extrabold text-sm tracking-wider uppercase cursor-pointer hover:-translate-y-0.5 hover:bg-[#ffdc6f] transition-all duration-180"
-        type="button"
-        @click="handleScrollToServices"
-      >
-        Hier geloven wij in...
-      </button>
     </div>
+
+    <!-- BOTTOM HALF-CIRCLE DOME TAB (CLICK TO SCROLL) -->
+    <button
+      type="button"
+      class="group absolute bottom-0 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center justify-center w-56 sm:w-64 h-14 sm:h-16 rounded-t-full bg-white/8 hover:bg-white/16 border-t border-x border-white/20 hover:border-lumi-yellow/50 backdrop-blur-md text-slate-200 hover:text-white transition-all duration-300 cursor-pointer pt-2.5 pb-1.5 gap-2 sm:gap-2.5 shadow-md hover:shadow-lg hover:-translate-y-0.5"
+      aria-label="Scroll naar visie: Hier geloven wij in"
+      @click="handleActionClick"
+    >
+      <span class="text-[11px] sm:text-xs font-bold tracking-widest uppercase group-hover:text-lumi-yellow transition-colors duration-200">
+        Hier geloven wij in
+      </span>
+      <FontAwesomeIcon
+        :icon="faChevronDown"
+        class="text-[11px] sm:text-xs text-lumi-yellow/80 group-hover:text-lumi-yellow transition-transform duration-200 group-hover:translate-y-0.5"
+      />
+    </button>
   </section>
 </template>

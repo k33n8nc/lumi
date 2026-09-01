@@ -14,6 +14,7 @@ useHead({
   ]
 })
 
+const beliefsRef = ref<{ scrollToBeliefs: () => void } | null>(null)
 const servicesRef = ref<{ scrollToServices: () => void } | null>(null)
 const teamContactRef = ref<{ scrollToTeam: () => void, scrollToContact: () => void } | null>(null)
 const careersRef = ref<{ scrollToCareers: () => void } | null>(null)
@@ -27,6 +28,8 @@ const onNavigate = (sectionId: string) => {
     } else {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
+  } else if (sectionId === 'visie' || sectionId === 'geloven-wij-in') {
+    beliefsRef.value?.scrollToBeliefs()
   } else if (sectionId === 'diensten') {
     servicesRef.value?.scrollToServices()
   } else if (sectionId === 'team') {
@@ -81,9 +84,15 @@ onBeforeUnmount(() => {
       <div id="smooth-content">
         <main class="min-h-screen">
           <!-- Standalone Static Hero Section -->
-          <HeroSection @scroll-to-services="() => onNavigate('diensten')" />
+          <HeroSection
+            @scroll-to-beliefs="() => onNavigate('visie')"
+            @scroll-to-services="() => onNavigate('diensten')"
+          />
 
-          <!-- Standalone Pinned Horizontal Services Section -->
+          <!-- Beliefs / Visie Section -->
+          <BeliefsSection ref="beliefsRef" />
+
+          <!-- Standalone Services Section -->
           <ServicesSection ref="servicesRef" />
 
           <!-- Team & Contact Navy Orb Transition Section -->

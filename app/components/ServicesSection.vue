@@ -91,7 +91,7 @@ defineExpose({
     <div class="w-full max-w-[100rem] mx-auto">
       <header class="mb-10 md:mb-12">
         <h1>
-          Dit nemen we uit handen
+          Dit nemen wij uit handen
         </h1>
       </header>
 
