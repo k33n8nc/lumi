@@ -14,7 +14,7 @@ useHead({
   ]
 })
 
-const heroServicesRef = ref<{ scrollToServices: () => void } | null>(null)
+const servicesRef = ref<{ scrollToServices: () => void } | null>(null)
 const teamContactRef = ref<{ scrollToTeam: () => void, scrollToContact: () => void } | null>(null)
 const careersRef = ref<{ scrollToCareers: () => void } | null>(null)
 
@@ -28,7 +28,7 @@ const onNavigate = (sectionId: string) => {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   } else if (sectionId === 'diensten') {
-    heroServicesRef.value?.scrollToServices()
+    servicesRef.value?.scrollToServices()
   } else if (sectionId === 'team') {
     teamContactRef.value?.scrollToTeam()
   } else if (sectionId === 'contact') {
@@ -79,9 +79,12 @@ onBeforeUnmount(() => {
     <!-- GSAP Smooth Scroll Wrapper -->
     <div id="smooth-wrapper">
       <div id="smooth-content">
-        <main class="min-h-screen bg-lumi-navy">
-          <!-- Hero & Services Pinned GSAP Transition Section -->
-          <HeroServicesSection ref="heroServicesRef" />
+        <main class="min-h-screen">
+          <!-- Standalone Static Hero Section -->
+          <HeroSection @scroll-to-services="() => onNavigate('diensten')" />
+
+          <!-- Standalone Pinned Horizontal Services Section -->
+          <ServicesSection ref="servicesRef" />
 
           <!-- Team & Contact Navy Orb Transition Section -->
           <TeamContactSection ref="teamContactRef" />

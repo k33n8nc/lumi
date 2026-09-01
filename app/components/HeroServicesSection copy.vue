@@ -95,9 +95,26 @@ onMounted(async () => {
 
   animationContext = gsap.context(() => {
 
+    const getLampPosition = () => {
+      const logoEl = transitionSection.value?.querySelector('.hero-logo-wrapper')
+      if (logoEl && transitionSection.value) {
+        const sectionRect = transitionSection.value.getBoundingClientRect()
+        const logoRect = logoEl.getBoundingClientRect()
+        return {
+          x: logoRect.left + logoRect.width / 2 - sectionRect.left,
+          y: logoRect.top + logoRect.height / 2 - sectionRect.top
+        }
+      }
+      return { x: window.innerWidth / 2, y: window.innerHeight * 0.32 }
+    }
+
     const coverScale = () => {
-      const diameter = Math.min(window.innerWidth, window.innerHeight) * 0.68
-      return (Math.hypot(window.innerWidth, window.innerHeight) / diameter) * 1.08
+      const lamp = getLampPosition()
+      const dx = Math.max(lamp.x, window.innerWidth - lamp.x)
+      const dy = Math.max(lamp.y, window.innerHeight - lamp.y)
+      const maxDist = Math.hypot(dx, dy)
+      const diameter = Math.min(window.innerWidth, window.innerHeight) * 0.60
+      return ((maxDist * 2) / diameter) * 1.1
     }
 
     const getScrollAmount = () => {
@@ -120,30 +137,51 @@ onMounted(async () => {
     })
 
     timeline
-      .to('.hero-layer', { opacity: 0, yPercent: -5, duration: 0.25 }, 0)
+      // 1. Hero text and CTA fade out as light intensifies
+      .to('.hero-text-block', { opacity: 0, yPercent: -8, duration: 0.2 }, 0)
+
+      // 2. Light beam & bulb glow brighten up to full brilliance
+      .to('.hero-light-beam', { opacity: 1, scale: 1.15, duration: 0.18 }, 0)
+      .to('.hero-bulb-glow', { scale: 1.6, opacity: 1, duration: 0.18 }, 0)
+
+      // 3. Radiant yellow light flood bursts from the lamp and expands across the entire viewport
       .fromTo(
-        '.sun-orb',
-        { opacity: 0, scale: 0.16, left: '50%', top: '50%' },
-        { opacity: 0.34, scale: 0.8, duration: 0.15 },
-        0
-      )
-      .to('.sun-orb', { opacity: 1, scale: 1.32, duration: 0.15 }, 0.15)
-      .to(
-        '.sun-orb',
+        '.light-flood',
         {
-          left: '50%',
-          top: '50%',
-          scale: coverScale,
-          duration: 0.25
+          opacity: 0,
+          scale: 0.1,
+          left: () => `${getLampPosition().x}px`,
+          top: () => `${getLampPosition().y}px`
         },
-        0.3
+        {
+          opacity: 0.7,
+          scale: 0.8,
+          left: () => `${getLampPosition().x}px`,
+          top: () => `${getLampPosition().y}px`,
+          duration: 0.16
+        },
+        0.02
       )
-      .set('.services-layer', { visibility: 'visible' }, 0.45)
+      .to(
+        '.light-flood',
+        {
+          opacity: 1,
+          left: () => `${getLampPosition().x}px`,
+          top: () => `${getLampPosition().y}px`,
+          scale: coverScale,
+          duration: 0.24
+        },
+        0.18
+      )
+      .to('.hero-layer', { opacity: 0, duration: 0.1 }, 0.34)
+
+      // 4. Reveal Services Layer (Dark Navy on Yellow)
+      .set('.services-layer', { visibility: 'visible' }, 0.44)
       .fromTo(
         '.services-layer',
         { opacity: 0, y: 24 },
         { opacity: 1, y: 0, duration: 0.18 },
-        0.48
+        0.46
       )
 
     if (servicesTrack.value) {
@@ -180,7 +218,7 @@ onBeforeUnmount(() => {
         <!-- LOGO WITH SUBTLE LIGHT EFFECT -->
         <div class="relative flex flex-col items-center">
           <!-- SUBTLE ROUNDED LIGHT BEAM (LUMI YELLOW) -->
-          <div class="pointer-events-none absolute -top-4 sm:-top-6 left-1/2 -translate-x-1/2 w-[620px] sm:w-[820px] md:w-[980px] h-[500px] sm:h-[580px] md:h-[650px] -z-10 select-none overflow-visible" aria-hidden="true">
+          <div class="hero-light-beam pointer-events-none absolute -top-4 sm:-top-6 left-1/2 -translate-x-1/2 w-[620px] sm:w-[820px] md:w-[980px] h-[500px] sm:h-[580px] md:h-[650px] -z-10 select-none overflow-visible will-change-transform" aria-hidden="true">
             <svg
               class="w-full h-full overflow-visible"
               viewBox="0 0 800 600"
@@ -190,8 +228,8 @@ onBeforeUnmount(() => {
               <defs>
                 <!-- Subtle Lumi Yellow Gradient -->
                 <linearGradient id="lumiSubtleBeam" x1="400" y1="20" x2="400" y2="600" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#ffd24a" stop-opacity="0.22" />
-                  <stop offset="30%" stop-color="#ffd24a" stop-opacity="0.12" />
+                  <stop offset="0%" stop-color="#ffd24a" stop-opacity="0.25" />
+                  <stop offset="30%" stop-color="#ffd24a" stop-opacity="0.14" />
                   <stop offset="65%" stop-color="#ffd24a" stop-opacity="0.04" />
                   <stop offset="100%" stop-color="#ffd24a" stop-opacity="0" />
                 </linearGradient>
@@ -211,40 +249,43 @@ onBeforeUnmount(() => {
             </svg>
 
             <!-- Soft ambient glow right behind the bulb -->
-            <div class="absolute top-2 left-1/2 -translate-x-1/2 -translate-y-1/4 w-[180px] h-[180px] rounded-full bg-[radial-gradient(circle,rgba(255,210,74,0.25)_0%,rgba(255,210,74,0.08)_45%,transparent_70%)] blur-[18px]" />
+            <div class="hero-bulb-glow absolute top-2 left-1/2 -translate-x-1/2 -translate-y-1/4 w-[180px] h-[180px] rounded-full bg-[radial-gradient(circle,rgba(255,210,74,0.3)_0%,rgba(255,210,74,0.1)_45%,transparent_70%)] blur-[18px] will-change-transform" />
           </div>
 
           <!-- LOGO IMAGE -->
-          <div class="relative mb-5 md:mb-6">
+          <div class="hero-logo-wrapper relative mb-5 md:mb-6">
             <img
               src="~/assets/images/logo-trans-kleur-wit.png"
               alt="Lumi Logo"
-              class="relative z-10 w-16 h-auto sm:w-20 md:w-22 select-none drop-shadow-[0_0_16px_rgba(255,210,74,0.45)]"
+              class="hero-logo-img relative z-10 w-16 h-auto sm:w-20 md:w-22 select-none drop-shadow-[0_0_16px_rgba(255,210,74,0.45)] will-change-transform"
             />
           </div>
         </div>
 
-        <h1>
-          Lumi brengt <em class="text-lumi-yellow not-italic">helderheid</em><br>in uw organisatie.
-        </h1>
-        <p class="max-w-[42rem] mx-auto mt-6 text-slate-200 text-body-lg">
-          Lumi Support staat naast kinderopvangorganisaties die rust, overzicht en continuïteit zoeken.
-          Met jarenlange praktijkervaring binnen de kinderopvang weten wij precies waar de uitdagingen
-          liggen - van planning en oudercommunicatie tot facturatie en debiteurenbeheer.
-        </p>
-        <button
-          class="inline-flex items-center justify-center min-w-[18rem] mt-8 px-8 py-3.5 border-0 rounded-full bg-lumi-yellow text-lumi-navy font-extrabold text-sm tracking-wider uppercase cursor-pointer hover:-translate-y-0.5 hover:bg-[#ffdc6f] transition-all duration-180"
-          type="button"
-          @click="scrollToServices"
-        >
-          Bekijk onze diensten
-        </button>
+        <!-- HERO TEXT & CTA BLOCK -->
+        <div class="hero-text-block flex flex-col items-center will-change-transform">
+          <h1>
+            Lumi brengt <em class="text-lumi-yellow not-italic">helderheid</em><br>in uw organisatie.
+          </h1>
+          <p class="max-w-[42rem] mx-auto mt-6 text-slate-200 text-body-lg">
+            Lumi Support staat naast kinderopvangorganisaties die rust, overzicht en continuïteit zoeken.
+            Met jarenlange praktijkervaring binnen de kinderopvang weten wij precies waar de uitdagingen
+            liggen - van planning en oudercommunicatie tot facturatie en debiteurenbeheer.
+          </p>
+          <button
+            class="inline-flex items-center justify-center min-w-[18rem] mt-8 px-8 py-3.5 border-0 rounded-full bg-lumi-yellow text-lumi-navy font-extrabold text-sm tracking-wider uppercase cursor-pointer hover:-translate-y-0.5 hover:bg-[#ffdc6f] transition-all duration-180"
+            type="button"
+            @click="scrollToServices"
+          >
+            Bekijk onze diensten
+          </button>
+        </div>
       </div>
     </div>
 
-    <!-- SUN ORB ANIMATION PIN CIRCLE -->
+    <!-- RADIANT LIGHT FLOOD LAYER (EXPANDS DIRECTLY FROM THE LAMP) -->
     <div
-      class="sun-orb absolute z-[1] left-1/2 top-1/2 w-[68vmin] h-[68vmin] rounded-full bg-lumi-yellow opacity-0 -translate-x-1/2 -translate-y-1/2 scale-[0.16] origin-center will-change-transform"
+      class="light-flood absolute z-[1] w-[60vmin] h-[60vmin] rounded-full bg-lumi-yellow opacity-0 -translate-x-1/2 -translate-y-1/2 scale-[0.1] origin-center will-change-transform pointer-events-none"
       aria-hidden="true"
     />
 
