@@ -70,7 +70,7 @@ defineExpose({
 
             <!-- Concluding Quote Statement -->
             <blockquote class="relative pl-5 border-l-2 border-lumi-yellow text-lumi-navy italic font-medium text-body-lg leading-relaxed pt-1 pb-1 mt-2">
-              &ldquo;Zo zorgen wij voor rust, zekerheid en grip op jullie administratie, zodat jullie je kunnen richten op waar het écht om draait: <span class="text-lumi-gold-text not-italic font-bold">de kinderen</span>.&rdquo;
+              &ldquo;Zo zorgen wij voor rust, zekerheid en grip op jullie administratie, zodat jullie je kunnen richten op waar het écht om draait: <span class="text-lumi-yellow">de kinderen</span>.&rdquo;
             </blockquote>
           </div>
         </div>
