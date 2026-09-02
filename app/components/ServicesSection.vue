@@ -90,7 +90,7 @@ defineExpose({
   >
     <div class="w-full max-w-[100rem] mx-auto">
       <header class="mb-10 md:mb-12">
-        <h1>
+        <h1 class="text-center">
           Dit nemen wij uit handen
         </h1>
       </header>
@@ -99,15 +99,15 @@ defineExpose({
         <article
           v-for="service in services"
           :key="service.id"
-          class="service-card flex flex-col h-full p-6 md:p-7 rounded-2xl bg-white/90 text-lumi-navy shadow-md gap-3"
+          class="service-card flex flex-col h-full p-6 md:p-7 rounded-2xl bg-white/8 hover:bg-white/14 hover:border-lumi-yellow/40 backdrop-blur-md shadow-md transition-all duration-300 gap-3"
         >
-          <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-lumi-yellow text-lumi-navy text-xl" aria-hidden="true">
+          <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-white/10 text-lumi-yellow text-xl" aria-hidden="true">
             <FontAwesomeIcon :icon="service.icon" />
           </span>
-          <h3 class="text-lumi-navy">
+          <h3 class="text-white">
             <span v-for="titleLine in service.title" :key="titleLine" class="block">{{ titleLine }}</span>
           </h3>
-          <p class="text-slate-600 text-body-md leading-relaxed">
+          <p class="text-slate-300 text-body-md leading-relaxed">
             {{ service.text }}
           </p>
         </article>
