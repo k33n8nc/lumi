@@ -43,6 +43,13 @@ const emit = defineEmits<{
               <button
                 type="button"
                 class="text-left text-slate-300 hover:text-white transition-colors text-base cursor-pointer bg-transparent border-0 p-0"
+                @click="emit('navigate', 'visie')"
+              >
+                Hier geloven wij in
+              </button>
+              <button
+                type="button"
+                class="text-left text-slate-300 hover:text-white transition-colors text-base cursor-pointer bg-transparent border-0 p-0"
                 @click="emit('navigate', 'diensten')"
               >
                 Onze diensten
@@ -60,13 +67,6 @@ const emit = defineEmits<{
                 @click="emit('navigate', 'contact')"
               >
                 Kennismaken
-              </button>
-              <button
-                type="button"
-                class="text-left text-slate-300 hover:text-white transition-colors text-base cursor-pointer bg-transparent border-0 p-0"
-                @click="emit('navigate', 'werken-bij')"
-              >
-                Werken bij
               </button>
             </div>
           </nav>

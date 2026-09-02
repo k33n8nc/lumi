@@ -16,8 +16,8 @@ useHead({
 
 const beliefsRef = ref<{ scrollToBeliefs: () => void } | null>(null)
 const servicesRef = ref<{ scrollToServices: () => void } | null>(null)
-const teamContactRef = ref<{ scrollToTeam: () => void, scrollToContact: () => void } | null>(null)
-const careersRef = ref<{ scrollToCareers: () => void } | null>(null)
+const teamRef = ref<{ scrollToTeam: () => void } | null>(null)
+const contactRef = ref<{ scrollToContact: () => void } | null>(null)
 
 let smoother: ScrollSmoother | null = null
 
@@ -33,11 +33,9 @@ const onNavigate = (sectionId: string) => {
   } else if (sectionId === 'diensten') {
     servicesRef.value?.scrollToServices()
   } else if (sectionId === 'team') {
-    teamContactRef.value?.scrollToTeam()
+    teamRef.value?.scrollToTeam()
   } else if (sectionId === 'contact') {
-    teamContactRef.value?.scrollToContact()
-  } else if (sectionId === 'werken-bij') {
-    careersRef.value?.scrollToCareers()
+    contactRef.value?.scrollToContact()
   } else {
     const el = document.getElementById(sectionId)
     if (el) {
@@ -95,11 +93,11 @@ onBeforeUnmount(() => {
           <!-- Standalone Services Section -->
           <ServicesSection ref="servicesRef" />
 
-          <!-- Team & Contact Navy Orb Transition Section -->
-          <TeamContactSection ref="teamContactRef" />
+          <!-- Standalone Team Section -->
+          <TeamSection ref="teamRef" />
 
-          <!-- Careers Section -->
-          <CareersSection ref="careersRef" />
+          <!-- Standalone Contact Section -->
+          <ContactSection ref="contactRef" />
 
           <!-- Footer Section -->
           <AppFooter @navigate="onNavigate" />

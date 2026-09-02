@@ -52,6 +52,13 @@ const handleNavigate = (sectionId: string) => {
         <button
           type="button"
           class="p-0 bg-transparent border-0 text-white hover:text-lumi-yellow text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight transition-colors text-left cursor-pointer"
+          @click="handleNavigate('visie')"
+        >
+          Hier geloven wij in
+        </button>
+        <button
+          type="button"
+          class="p-0 bg-transparent border-0 text-white hover:text-lumi-yellow text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight transition-colors text-left cursor-pointer"
           @click="handleNavigate('diensten')"
         >
           Onze diensten
@@ -69,13 +76,6 @@ const handleNavigate = (sectionId: string) => {
           @click="handleNavigate('contact')"
         >
           Kennismaken
-        </button>
-        <button
-          type="button"
-          class="p-0 bg-transparent border-0 text-white hover:text-lumi-yellow text-4xl sm:text-5xl md:text-7xl font-bold tracking-tight transition-colors text-left cursor-pointer"
-          @click="handleNavigate('werken-bij')"
-        >
-          Werken bij
         </button>
       </nav>
     </Transition>
