@@ -43,7 +43,7 @@ defineExpose({
   <section
     id="werken-bij"
     ref="sectionRef"
-    class="w-full py-24 px-6 md:px-16 bg-white text-lumi-navy border-t border-slate-100"
+    class="relative w-full min-h-screen flex flex-col justify-center py-20 md:py-28 px-6 md:px-16 bg-white text-lumi-navy border-t border-slate-100"
     aria-labelledby="careers-title"
   >
     <div class="w-full max-w-[100rem] mx-auto flex flex-col gap-16">
@@ -68,7 +68,7 @@ defineExpose({
           :key="value.title"
           class="flex flex-col p-6 md:p-7 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-lg transition-all duration-200 gap-3"
         >
-          <span class="inline-grid place-items-center w-14 h-14 rounded-full bg-lumi-gold-bg text-lumi-gold-text text-2xl" aria-hidden="true">
+          <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-lumi-gold-bg text-lumi-gold-text text-xl" aria-hidden="true">
             <FontAwesomeIcon :icon="value.icon" />
           </span>
           <h3 class="text-lumi-navy">

@@ -85,7 +85,7 @@ defineExpose({
   <section
     id="diensten"
     ref="sectionRef"
-    class="w-full py-24 md:py-28 px-6 md:px-16 bg-lumi-yellow text-lumi-navy flex flex-col justify-center"
+    class="relative w-full min-h-screen flex flex-col justify-center py-20 md:py-28 px-6 md:px-16 bg-lumi-yellow text-lumi-navy"
     aria-label="Onze diensten"
   >
     <div class="w-full max-w-[100rem] mx-auto">
@@ -101,13 +101,13 @@ defineExpose({
           :key="service.id"
           class="service-card flex flex-col h-full p-6 md:p-7 rounded-2xl bg-white/97 text-lumi-navy shadow-md hover:shadow-lg transition-all duration-200 gap-3"
         >
-          <span class="inline-grid place-items-center w-14 h-14 rounded-full bg-lumi-gold-bg text-lumi-gold-text text-2xl" aria-hidden="true">
+          <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-lumi-gold-bg text-lumi-gold-text text-xl" aria-hidden="true">
             <FontAwesomeIcon :icon="service.icon" />
           </span>
           <h3 class="text-lumi-navy">
             <span v-for="titleLine in service.title" :key="titleLine" class="block">{{ titleLine }}</span>
           </h3>
-          <p class="text-body-md mt-1 leading-relaxed">
+          <p class="text-slate-600 text-body-md leading-relaxed">
             {{ service.text }}
           </p>
         </article>

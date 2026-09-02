@@ -15,7 +15,7 @@ const handleActionClick = () => {
 <template>
   <section
     id="hero"
-    class="relative w-full h-screen min-h-[44rem] flex flex-col justify-center items-center overflow-hidden bg-lumi-navy text-lumi-white px-6 pt-12 pb-24 select-none"
+    class="relative w-full min-h-screen min-h-[44rem] flex flex-col justify-center items-center overflow-hidden bg-lumi-navy text-lumi-white px-6 pt-12 pb-24 select-none"
     aria-label="Introductie"
   >
     <!-- HERO MAIN CONTENT (SHIFTED UPWARDS) -->
@@ -71,7 +71,7 @@ const handleActionClick = () => {
       <h1>
         Lumi brengt <em class="text-lumi-yellow not-italic">helderheid</em><br>in uw organisatie.
       </h1>
-      <p class="max-w-[42rem] mx-auto mt-6 text-slate-200 text-body-lg">
+      <p class="max-w-[36rem] mx-auto mt-6 text-slate-200 text-body-lg">
         Lumi Support staat naast kinderopvangorganisaties die rust, overzicht en continuïteit zoeken.
         Met jarenlange praktijkervaring binnen de kinderopvang weten wij precies waar de uitdagingen
         liggen - van planning en oudercommunicatie tot facturatie en debiteurenbeheer.

@@ -47,7 +47,7 @@ defineExpose({
   <section
     id="visie"
     ref="sectionRef"
-    class="w-full py-24 md:py-28 px-6 md:px-16 bg-white text-lumi-navy border-t border-slate-100"
+    class="relative w-full min-h-screen flex flex-col justify-center py-20 md:py-28 px-6 md:px-16 bg-white text-lumi-navy border-t border-slate-100"
     aria-labelledby="beliefs-title"
   >
     <div class="w-full max-w-[100rem] mx-auto flex flex-col gap-14 md:gap-16">
