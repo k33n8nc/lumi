@@ -2,6 +2,7 @@
 import { ref } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
+  faAward,
   faCircleCheck,
   faLightbulb,
   faRotate
@@ -22,7 +23,7 @@ const beliefs = [
     text: 'Jullie moeten erop kunnen vertrouwen dat de administratie en facturatie kloppen. Daarom werken we zorgvuldig, gestructureerd en met vaste controles.'
   },
   {
-    icon: faLightbulb,
+    icon: faAward,
     title: 'Deskundigheid',
     text: 'Wij kennen de kinderopvang én de systemen en processen erachter. Daardoor voeren we niet alleen uit, maar denken we met jullie mee en zien we waar het slimmer of beter kan.'
   }
@@ -57,10 +58,10 @@ defineExpose({
         
         <!-- Left Column: Heading, Story Paragraphs & Concluding Quote -->
         <div class="lg:col-span-6 flex flex-col gap-6">
-          <h1 id="beliefs-title" class="text-lumi-navy">
+          <h1 id="beliefs-title" class="text-lumi-navy/90">
             Hier geloven wij in
           </h1>
-          <div class="flex flex-col gap-5 text-slate-700 text-body-lg leading-relaxed mt-2">
+          <div class="flex flex-col gap-5 text-lumi-navy/90 text-body-lg leading-relaxed mt-2">
             <p>
               Wij geloven dat kinderopvang draait om kinderen, niet om administratie. Kinderopvangorganisaties verdienen de ruimte om zich te richten op wat écht belangrijk is: het bieden van liefdevolle en kwalitatieve opvang. Daarom nemen wij administratieve processen uit handen en zorgen we voor rust, overzicht en continuïteit.
             </p>
@@ -69,7 +70,7 @@ defineExpose({
             </p>
 
             <!-- Concluding Quote Statement -->
-            <blockquote class="relative pl-5 border-l-2 border-lumi-yellow text-lumi-navy italic font-medium text-body-lg leading-relaxed pt-1 pb-1 mt-2">
+            <blockquote class="relative pl-5 border-l-2 border-lumi-yellow text-lumi-navy/50 italic font-medium text-body-lg leading-relaxed pt-1 pb-1 mt-2">
               &ldquo;Zo zorgen wij voor rust, zekerheid en grip op jullie administratie, zodat jullie je kunnen richten op waar het écht om draait: <span class="text-lumi-yellow">de kinderen</span>.&rdquo;
             </blockquote>
           </div>
@@ -80,16 +81,16 @@ defineExpose({
           <article
             v-for="belief in beliefs"
             :key="belief.title"
-            class="flex flex-col sm:flex-row items-start h-full p-6 sm:p-7 rounded-2xl bg-slate-50 border border-slate-100 hover:shadow-md transition-all duration-200 gap-4 sm:gap-5"
+            class="flex flex-col sm:flex-row items-start h-full p-6 sm:p-7 rounded-2xl bg-lumi-yellow hover:shadow-md transition-shadow duration-200 gap-4 sm:gap-5"
           >
-            <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-lumi-gold-bg text-lumi-gold-text text-xl flex-shrink-0" aria-hidden="true">
+            <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-lumi-navy/10 text-lumi-navy text-xl flex-shrink-0 shadow-sm" aria-hidden="true">
               <FontAwesomeIcon :icon="belief.icon" />
             </span>
             <div class="flex flex-col gap-1.5">
               <h3 class="text-lumi-navy">
                 {{ belief.title }}
               </h3>
-              <p class="text-slate-600 text-body-md leading-relaxed">
+              <p class="text-lumi-navy/80 text-body-md leading-relaxed">
                 {{ belief.text }}
               </p>
             </div>

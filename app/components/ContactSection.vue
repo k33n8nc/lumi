@@ -25,7 +25,7 @@ defineExpose({
   <section
     id="kennismaken"
     ref="sectionRef"
-    class="relative w-full min-h-screen flex flex-col justify-center py-20 md:py-28 px-6 md:px-16 bg-lumi-yellow text-lumi-navy overflow-hidden"
+    class="relative w-full flex flex-col justify-center py-20 md:py-28 px-6 md:px-16 bg-lumi-yellow text-lumi-navy overflow-hidden"
     aria-label="Kennismaken en contact"
   >
     <div class="w-full max-w-[100rem] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
@@ -41,13 +41,13 @@ defineExpose({
           </p>
         </div>
 
-        <div class="flex flex-col gap-5 pt-4 border-t border-lumi-navy/15 max-w-xl">
+        <div class="flex flex-col gap-5 pt-4 border-lumi-navy/15 max-w-xl">
           <!-- Mail Option -->
           <a
             href="mailto:contact@lumi-support.nl"
-            class="flex items-center gap-4 text-lumi-navy hover:text-black transition-colors group no-underline"
+            class="flex items-center gap-4 text-lumi-navy"
           >
-            <span class="inline-grid place-items-center w-14 h-14 rounded-full bg-white text-lumi-navy text-2xl shadow-sm group-hover:scale-105 transition-transform" aria-hidden="true">
+            <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-lumi-navy/10 text-lumi-navy text-xl" aria-hidden="true">
               <FontAwesomeIcon :icon="faEnvelope" />
             </span>
             <div class="flex flex-col">
@@ -61,7 +61,7 @@ defineExpose({
             href="tel:+31640937499"
             class="flex items-center gap-4 text-lumi-navy hover:text-black transition-colors group no-underline"
           >
-            <span class="inline-grid place-items-center w-14 h-14 rounded-full bg-white text-lumi-navy text-2xl shadow-sm group-hover:scale-105 transition-transform" aria-hidden="true">
+            <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-lumi-navy/10 text-lumi-navy text-xl" aria-hidden="true">
               <FontAwesomeIcon :icon="faPhone" />
             </span>
             <div class="flex flex-col">
