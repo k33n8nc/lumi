@@ -83,7 +83,7 @@ defineExpose({
             :key="belief.title"
             class="flex flex-col sm:flex-row items-start h-full p-6 sm:p-7 rounded-2xl bg-lumi-yellow hover:shadow-md transition-shadow duration-200 gap-4 sm:gap-5"
           >
-            <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-lumi-navy/10 text-lumi-navy text-xl flex-shrink-0 shadow-sm" aria-hidden="true">
+            <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-white/30 text-lumi-navy text-xl flex-shrink-0" aria-hidden="true">
               <FontAwesomeIcon :icon="belief.icon" />
             </span>
             <div class="flex flex-col gap-1.5">

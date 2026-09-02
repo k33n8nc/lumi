@@ -47,7 +47,7 @@ defineExpose({
             href="mailto:contact@lumi-support.nl"
             class="flex items-center gap-4 text-lumi-navy"
           >
-            <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-lumi-navy/10 text-lumi-navy text-xl" aria-hidden="true">
+            <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-white/30 text-lumi-navy text-xl" aria-hidden="true">
               <FontAwesomeIcon :icon="faEnvelope" />
             </span>
             <div class="flex flex-col">
@@ -61,7 +61,7 @@ defineExpose({
             href="tel:+31640937499"
             class="flex items-center gap-4 text-lumi-navy hover:text-black transition-colors group no-underline"
           >
-            <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-lumi-navy/10 text-lumi-navy text-xl" aria-hidden="true">
+            <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-white/30 text-lumi-navy text-xl" aria-hidden="true">
               <FontAwesomeIcon :icon="faPhone" />
             </span>
             <div class="flex flex-col">
