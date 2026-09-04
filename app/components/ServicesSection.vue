@@ -49,7 +49,7 @@ const services = [
   {
     id: 'debiteurenadministratie',
     icon: faMoneyCheckDollar,
-    title: ['Koppeling met', 'debiteurenadministratie'],
+    title: ['Koppeling met', 'debiteurenbeheer'],
     text: 'Strakke opvolging van betalingen en een naadloze koppeling met Payt voor uw administratie.'
   },
   {
@@ -85,12 +85,12 @@ defineExpose({
   <section
     id="diensten"
     ref="sectionRef"
-    class="relative w-full min-h-screen flex flex-col justify-center py-20 md:py-28 px-6 md:px-16 bg-lumi-navy text-white/90"
+    class="relative w-full flex flex-col justify-center py-20 md:py-28 px-6 md:px-16 bg-lumi-navy text-white/90"
     aria-label="Onze diensten"
   >
-    <div class="w-full max-w-[100rem] mx-auto">
+    <div class="w-full">
       <header class="mb-10 md:mb-12">
-        <h1 class="text-center">
+        <h1 class="">
           Dit nemen wij uit handen
         </h1>
       </header>
@@ -107,10 +107,21 @@ defineExpose({
           <h3 class="text-white">
             <span v-for="titleLine in service.title" :key="titleLine" class="block">{{ titleLine }}</span>
           </h3>
-          <p class="text-slate-300 text-body-md leading-relaxed">
+          <!-- <p class="text-slate-300 text-body-md leading-relaxed">
             {{ service.text }}
-          </p>
+          </p> -->
         </article>
+      </div>
+      <div class="max-w-2xl">
+          <h3 id="beliefs-title" class="text-white mt-8 mb-2">
+            Tijdelijk extra expertise nodig?
+          </h3>
+          <p>
+            Tijdelijk extra expertise nodig? Bij ziekte, zwangerschapsverlof, personeelstekort of tijdelijke extra drukte kunnen jullie direct op ons rekenen. Lumi Support levert ervaren interim planners en financieel-administratieve medewerkers die snel inzetbaar zijn en de kinderopvang kennen.
+          </p>
+          <p class="mt-4">
+            We nemen de werkzaamheden tijdelijk uit handen en zorgen dat de administratie deskundig, zorgvuldig en zonder onderbreking doorgaat. Zo blijft de continuïteit gewaarborgd, juist op de momenten dat jullie extra ondersteuning nodig hebben.
+          </p>
       </div>
     </div>
   </section>

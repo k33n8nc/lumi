@@ -3,6 +3,9 @@ import { ref } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { ScrollSmoother } from 'gsap/ScrollSmoother'
+import stanleyImg from '~/assets/images/stanley.jpg'
+import ailkoImg from '~/assets/images/ailko.jpg'
+import patriciaImg from '~/assets/images/patricia.jpg'
 
 const sectionRef = ref<HTMLElement | null>(null)
 
@@ -10,17 +13,17 @@ const teamMembers = [
   {
     name: 'Stanley Husen',
     role: 'Eigenaar & Oprichter',
-    image: null
+    image: stanleyImg
   },
   {
     name: 'Ailko Treebusch',
     role: 'Eigenaar & Oprichter',
-    image: null
+    image: ailkoImg
   },
   {
     name: 'Patricia Danckaerts',
     role: 'Operationeel Manager',
-    image: null
+    image: patriciaImg
   }
 ]
 
@@ -51,7 +54,7 @@ defineExpose({
       <!-- Section Header -->
       <header class="text-center mb-10 md:mb-14">
         <h1 id="team-title" class="text-lumi-navy">
-          Ons team
+          Het <span class="text-lumi-yellow">lumi</span> team
         </h1>
       </header>
 

@@ -88,7 +88,10 @@ onBeforeUnmount(() => {
           />
 
           <!-- Beliefs / Visie Section -->
-          <BeliefsSection ref="beliefsRef" />
+          <BeliefsSection
+            ref="beliefsRef"
+            @scroll-to-services="() => onNavigate('diensten')"
+          />
 
           <!-- Standalone Services Section -->
           <ServicesSection ref="servicesRef" />

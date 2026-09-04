@@ -3,11 +3,16 @@ import { ref } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import {
   faAward,
+  faChevronDown,
   faCircleCheck,
   faLightbulb,
   faRotate
 } from '@fortawesome/free-solid-svg-icons'
 import { ScrollSmoother } from 'gsap/ScrollSmoother'
+
+const emit = defineEmits<{
+  (e: 'scrollToServices'): void
+}>()
 
 const sectionRef = ref<HTMLElement | null>(null)
 
@@ -39,6 +44,10 @@ const scrollToBeliefs = () => {
   }
 }
 
+const handleActionClick = () => {
+  emit('scrollToServices')
+}
+
 defineExpose({
   scrollToBeliefs
 })
@@ -48,7 +57,7 @@ defineExpose({
   <section
     id="visie"
     ref="sectionRef"
-    class="relative w-full min-h-screen flex flex-col justify-center py-20 md:py-28 px-6 md:px-16 bg-white text-lumi-navy border-t border-slate-100"
+    class="relative w-full min-h-screen flex flex-col justify-center pt-20 pb-24 md:pt-28 md:pb-32 px-6 md:px-16 bg-white text-lumi-navy border-t border-slate-100"
     aria-labelledby="beliefs-title"
   >
     <div class="w-full max-w-[100rem] mx-auto flex flex-col gap-14 md:gap-16">
@@ -69,11 +78,12 @@ defineExpose({
               Met onze jarenlange ervaring in de kinderopvang en diepgaande kennis van Jaamo combineren we praktijkkennis met slimme processen. We voeren niet alleen uit, maar denken mee, signaleren kansen en helpen organisaties hun administratie steeds slimmer en efficiënter in te richten.
             </p>
 
-            <!-- Concluding Quote Statement -->
+          <!-- Concluding Quote Statement -->
             <blockquote class="relative pl-5 border-l-2 border-lumi-yellow text-lumi-navy/50 italic font-medium text-body-lg leading-relaxed pt-1 pb-1 mt-2">
               &ldquo;Zo zorgen wij voor rust, zekerheid en grip op jullie administratie, zodat jullie je kunnen richten op waar het écht om draait: <span class="text-lumi-yellow">de kinderen</span>.&rdquo;
             </blockquote>
           </div>
+
         </div>
 
         <!-- Right Column: 3 Vertical Value Pillars (Equal Height) -->
@@ -98,5 +108,21 @@ defineExpose({
         </div>
       </div>
     </div>
+
+    <!-- BOTTOM HALF-CIRCLE DOME TAB (CLICK TO SCROLL TO SERVICES) -->
+    <button
+      type="button"
+      class="group absolute bottom-0 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center justify-center w-60 sm:w-72 h-14 sm:h-16 rounded-t-full bg-lumi-yellow hover:bg-[#ffd85e] border-t border-x border-amber-300/70 hover:border-amber-400 text-lumi-navy transition-all duration-300 cursor-pointer pt-2.5 pb-1.5 gap-1.5 sm:gap-2 shadow-md hover:shadow-lg hover:-translate-y-0.5"
+      aria-label="Scroll naar diensten: Dit nemen wij uit handen"
+      @click="handleActionClick"
+    >
+      <span class="text-[10px] sm:text-xs font-bold tracking-wider sm:tracking-widest uppercase transition-colors duration-200">
+        Dit nemen wij uit handen
+      </span>
+      <FontAwesomeIcon
+        :icon="faChevronDown"
+        class="text-[11px] sm:text-xs text-lumi-navy/75 group-hover:text-lumi-navy transition-transform duration-200 group-hover:translate-y-0.5"
+      />
+    </button>
   </section>
 </template>
