@@ -3,27 +3,23 @@ import { ref } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
 import { ScrollSmoother } from 'gsap/ScrollSmoother'
-import stanleyImg from '~/assets/images/stanley.jpg'
-import ailkoImg from '~/assets/images/ailko.jpg'
-import patriciaImg from '~/assets/images/patricia.jpg'
-
 const sectionRef = ref<HTMLElement | null>(null)
 
 const teamMembers = [
   {
     name: 'Stanley Husen',
     role: 'Eigenaar & Oprichter',
-    image: stanleyImg
+    image: '/images/stanley.jpg'
   },
   {
     name: 'Ailko Treebusch',
     role: 'Eigenaar & Oprichter',
-    image: ailkoImg
+    image: '/images/ailko.jpg'
   },
   {
     name: 'Patricia Danckaerts',
     role: 'Operationeel Manager',
-    image: patriciaImg
+    image: '/images/patricia.jpg'
   }
 ]
 
@@ -59,7 +55,7 @@ defineExpose({
       </header>
 
       <!-- 3 Team Member Cards Grid (Matching reference mockup) -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8 max-w-5xl mx-auto w-full">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-6 lg:gap-8 max-w-sm sm:max-w-md md:max-w-5xl mx-auto w-full px-6 sm:px-10 md:px-0">
         <article
           v-for="member in teamMembers"
           :key="member.name"
