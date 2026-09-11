@@ -2,18 +2,11 @@
 import { ref } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faEnvelope, faPhone } from '@fortawesome/free-solid-svg-icons'
-import { ScrollSmoother } from 'gsap/ScrollSmoother'
 
 const sectionRef = ref<HTMLElement | null>(null)
 
 const scrollToContact = () => {
-  if (!sectionRef.value) return
-  const smoother = ScrollSmoother.get()
-  if (smoother) {
-    smoother.scrollTo(sectionRef.value, true)
-  } else {
-    sectionRef.value.scrollIntoView({ behavior: 'smooth' })
-  }
+  sectionRef.value?.scrollIntoView({ behavior: 'smooth' })
 }
 
 defineExpose({
@@ -58,7 +51,7 @@ defineExpose({
 
           <!-- Phone Option -->
           <a
-            href="tel:+31640937499"
+            href="tel:0851301404"
             class="flex items-center gap-4 text-lumi-navy hover:text-black transition-colors group no-underline"
           >
             <span class="inline-grid place-items-center w-12 h-12 rounded-full bg-white/30 text-lumi-navy text-xl" aria-hidden="true">
@@ -66,7 +59,7 @@ defineExpose({
             </span>
             <div class="flex flex-col">
               <span class="text-xs uppercase tracking-wider text-lumi-navy/60 font-bold">Bel ons</span>
-              <span class="text-base sm:text-lg font-bold">+31 (0)6 40937499</span>
+              <span class="text-base sm:text-lg font-bold">085 - 13 01 404</span>
             </div>
           </a>
         </div>

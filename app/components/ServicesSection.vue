@@ -11,7 +11,6 @@ import {
   faMoneyCheckDollar,
   faUserPlus
 } from '@fortawesome/free-solid-svg-icons'
-import { ScrollSmoother } from 'gsap/ScrollSmoother'
 
 const sectionRef = ref<HTMLElement | null>(null)
 
@@ -49,7 +48,7 @@ const services = [
   {
     id: 'debiteurenadministratie',
     icon: faMoneyCheckDollar,
-    title: ['Koppeling met', 'debiteurenbeheer'],
+    title: ['Debiteurenbeheer'],
     text: 'Strakke opvolging van betalingen en een naadloze koppeling met Payt voor uw administratie.'
   },
   {
@@ -67,13 +66,7 @@ const services = [
 ]
 
 const scrollToServices = () => {
-  if (!sectionRef.value) return
-  const smoother = ScrollSmoother.get()
-  if (smoother) {
-    smoother.scrollTo(sectionRef.value, true)
-  } else {
-    sectionRef.value.scrollIntoView({ behavior: 'smooth' })
-  }
+  sectionRef.value?.scrollIntoView({ behavior: 'smooth' })
 }
 
 defineExpose({

@@ -6,9 +6,6 @@ export default defineNuxtConfig({
   devtools: { enabled: true },
   css: ['~/assets/css/tailwind.css'],
   vite: {
-    optimizeDeps: {
-      include: ['gsap/ScrollSmoother']
-    },
     plugins: [
       tailwindcss()
     ]

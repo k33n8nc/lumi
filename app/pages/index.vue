@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import gsap from 'gsap'
-import { ScrollSmoother } from 'gsap/ScrollSmoother'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
 useHead({
   title: 'Lumi | Helderheid in uw organisatie',
@@ -19,15 +17,9 @@ const servicesRef = ref<{ scrollToServices: () => void } | null>(null)
 const teamRef = ref<{ scrollToTeam: () => void } | null>(null)
 const contactRef = ref<{ scrollToContact: () => void } | null>(null)
 
-let smoother: ScrollSmoother | null = null
-
 const onNavigate = (sectionId: string) => {
   if (sectionId === 'hero') {
-    if (smoother) {
-      smoother.scrollTo(0, true)
-    } else {
-      window.scrollTo({ top: 0, behavior: 'smooth' })
-    }
+    window.scrollTo({ top: 0, behavior: 'smooth' })
   } else if (sectionId === 'visie' || sectionId === 'geloven-wij-in') {
     beliefsRef.value?.scrollToBeliefs()
   } else if (sectionId === 'diensten') {
@@ -39,73 +31,41 @@ const onNavigate = (sectionId: string) => {
   } else {
     const el = document.getElementById(sectionId)
     if (el) {
-      if (smoother) {
-        smoother.scrollTo(el, true)
-      } else {
-        el.scrollIntoView({ behavior: 'smooth' })
-      }
+      el.scrollIntoView({ behavior: 'smooth' })
     }
   }
 }
-
-onMounted(async () => {
-  gsap.registerPlugin(ScrollTrigger, ScrollSmoother)
-  await nextTick()
-
-  // Prevent mobile Safari address bar show/hide from thrashing ScrollTrigger refreshes
-  ScrollTrigger.config({ ignoreMobileResize: true })
-
-  // Enable ScrollSmoother on desktop. On mobile touch devices, native momentum scrolling
-  // allows GSAP ScrollTrigger pins to run with 100% native GPU position: fixed hardware acceleration.
-  if (ScrollTrigger.isTouch !== 1) {
-    smoother = ScrollSmoother.create({
-      wrapper: '#smooth-wrapper',
-      content: '#smooth-content',
-      smooth: 1.15,
-      effects: true
-    })
-  }
-})
-
-onBeforeUnmount(() => {
-  smoother?.kill()
-})
 </script>
 
 <template>
   <div>
-    <!-- Fixed Viewport Navigation (Outside smooth-content to prevent CSS transform trapping) -->
+    <!-- Fixed Viewport Navigation -->
     <AppNavigation @navigate="onNavigate" />
 
-    <!-- GSAP Smooth Scroll Wrapper -->
-    <div id="smooth-wrapper">
-      <div id="smooth-content">
-        <main class="min-h-screen">
-          <!-- Standalone Static Hero Section -->
-          <HeroSection
-            @scroll-to-beliefs="() => onNavigate('visie')"
-            @scroll-to-services="() => onNavigate('diensten')"
-          />
+    <main class="min-h-screen">
+      <!-- Standalone Static Hero Section -->
+      <HeroSection
+        @scroll-to-beliefs="() => onNavigate('visie')"
+        @scroll-to-services="() => onNavigate('diensten')"
+      />
 
-          <!-- Beliefs / Visie Section -->
-          <BeliefsSection
-            ref="beliefsRef"
-            @scroll-to-services="() => onNavigate('diensten')"
-          />
+      <!-- Beliefs / Visie Section -->
+      <BeliefsSection
+        ref="beliefsRef"
+        @scroll-to-services="() => onNavigate('diensten')"
+      />
 
-          <!-- Standalone Services Section -->
-          <ServicesSection ref="servicesRef" />
+      <!-- Standalone Services Section -->
+      <ServicesSection ref="servicesRef" />
 
-          <!-- Standalone Team Section -->
-          <TeamSection ref="teamRef" />
+      <!-- Standalone Team Section -->
+      <TeamSection ref="teamRef" />
 
-          <!-- Standalone Contact Section -->
-          <ContactSection ref="contactRef" />
+      <!-- Standalone Contact Section -->
+      <ContactSection ref="contactRef" />
 
-          <!-- Footer Section -->
-          <AppFooter @navigate="onNavigate" />
-        </main>
-      </div>
-    </div>
+      <!-- Footer Section -->
+      <AppFooter @navigate="onNavigate" />
+    </main>
   </div>
 </template>

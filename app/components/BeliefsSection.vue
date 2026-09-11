@@ -8,7 +8,6 @@ import {
   faLightbulb,
   faRotate
 } from '@fortawesome/free-solid-svg-icons'
-import { ScrollSmoother } from 'gsap/ScrollSmoother'
 
 const emit = defineEmits<{
   (e: 'scrollToServices'): void
@@ -35,13 +34,7 @@ const beliefs = [
 ]
 
 const scrollToBeliefs = () => {
-  if (!sectionRef.value) return
-  const smoother = ScrollSmoother.get()
-  if (smoother) {
-    smoother.scrollTo(sectionRef.value, true)
-  } else {
-    sectionRef.value.scrollIntoView({ behavior: 'smooth' })
-  }
+  sectionRef.value?.scrollIntoView({ behavior: 'smooth' })
 }
 
 const handleActionClick = () => {

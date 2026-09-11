@@ -2,7 +2,7 @@
 import { ref } from 'vue'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { faUser } from '@fortawesome/free-solid-svg-icons'
-import { ScrollSmoother } from 'gsap/ScrollSmoother'
+
 const sectionRef = ref<HTMLElement | null>(null)
 
 const teamMembers = [
@@ -24,13 +24,7 @@ const teamMembers = [
 ]
 
 const scrollToTeam = () => {
-  if (!sectionRef.value) return
-  const smoother = ScrollSmoother.get()
-  if (smoother) {
-    smoother.scrollTo(sectionRef.value, true)
-  } else {
-    sectionRef.value.scrollIntoView({ behavior: 'smooth' })
-  }
+  sectionRef.value?.scrollIntoView({ behavior: 'smooth' })
 }
 
 defineExpose({
@@ -52,6 +46,11 @@ defineExpose({
         <h1 id="team-title" class="text-lumi-navy">
           Het <span class="text-lumi-yellow">lumi</span> team
         </h1>
+        <div class="max-w-2xl mx-auto mt-4">
+          <blockquote class="relative border-b-2 border-lumi-yellow text-lumi-navy/60 italic font-medium text-body-lg leading-relaxed pb-6">
+            &ldquo;Onze persoonlijke aanpak maakt het verschil. Wij zijn een hecht en betrokken team met een grote focus op jullie kwaliteit, continuïteit en rust.&rdquo;
+          </blockquote>
+        </div>
       </header>
 
       <!-- 3 Team Member Cards Grid (Matching reference mockup) -->
@@ -82,13 +81,6 @@ defineExpose({
             {{ member.role }}
           </p>
         </article>
-      </div>
-
-      <!-- Footnote Quote Statement -->
-      <div class="max-w-2xl mx-auto mt-12 md:mt-16 w-full text-center">
-        <blockquote class="relative border-t-2 border-lumi-yellow text-lumi-navy/60 italic font-medium text-body-lg leading-relaxed pt-6">
-          &ldquo;Onze persoonlijke aanpak maakt het verschil. Wij zijn een hecht en betrokken team met een grote focus op jullie kwaliteit, continuïteit en rust.&rdquo;
-        </blockquote>
       </div>
 
     </div>
